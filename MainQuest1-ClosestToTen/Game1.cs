@@ -9,6 +9,9 @@ namespace MainQuest1_ClosestToTen
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
+        private Rectangle _rectangle;
+        private Texture2D _whitePixelTexture;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -27,6 +30,17 @@ namespace MainQuest1_ClosestToTen
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            int rectangleWidth = 200;
+            int rectangleHeight = 100;
+            int x = 0;
+            int y = 0;
+            _rectangle = new Rectangle(x, y, rectangleWidth, rectangleHeight);
+            _whitePixelTexture = new Texture2D(GraphicsDevice, 1, 1);
+            _whitePixelTexture.SetData(new Color[] { Color.White });
+
+
+
+
             // TODO: use this.Content to load your game content here
         }
 
@@ -43,6 +57,15 @@ namespace MainQuest1_ClosestToTen
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
+
+            _spriteBatch.Begin();
+
+            _spriteBatch.Draw(_whitePixelTexture, _rectangle, Color.White);
+
+            _spriteBatch.End();
+
+
+
 
             // TODO: Add your drawing code here
 
