@@ -32,8 +32,8 @@ namespace MainQuest1_ClosestToTen
 
             int rectangleWidth = 200;
             int rectangleHeight = 100;
-            int x = 0;
-            int y = 0;
+            int x = (GraphicsDevice.Viewport.Width - rectangleWidth) / 2;
+            int y = (GraphicsDevice.Viewport.Height - rectangleHeight) / 2;
             _rectangle = new Rectangle(x, y, rectangleWidth, rectangleHeight);
             _whitePixelTexture = new Texture2D(GraphicsDevice, 1, 1);
             _whitePixelTexture.SetData(new Color[] { Color.White });
