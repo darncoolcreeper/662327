@@ -10,7 +10,13 @@ namespace MainQuest1_ClosestToTen
         private SpriteBatch _spriteBatch;
 
         private Rectangle _rectangle;
+        private Rectangle _rectangle1;
+
+
         private Texture2D _whitePixelTexture;
+        private Texture2D _redPixelTexture;
+
+        private Texture2D _bluePixelTexture;
 
         public Game1()
         {
@@ -32,14 +38,22 @@ namespace MainQuest1_ClosestToTen
 
             int rectangleWidth = 200;
             int rectangleHeight = 100;
-            int x = (GraphicsDevice.Viewport.Width - rectangleWidth) / 2;
-            int y = (GraphicsDevice.Viewport.Height - rectangleHeight) / 2;
+            int x = 0;
+            int y = (GraphicsDevice.Viewport.Height - rectangleHeight);
+
+            int x1 = (GraphicsDevice.Viewport.Width - rectangleWidth);
+            int y1 = (GraphicsDevice.Viewport.Height - rectangleHeight);
+
             _rectangle = new Rectangle(x, y, rectangleWidth, rectangleHeight);
+            _rectangle1 = new Rectangle(x1, y1, rectangleWidth, rectangleHeight);
             _whitePixelTexture = new Texture2D(GraphicsDevice, 1, 1);
             _whitePixelTexture.SetData(new Color[] { Color.White });
 
+            _redPixelTexture = new Texture2D(GraphicsDevice, 1, 1);
+            _redPixelTexture.SetData(new Color[] { Color.Red });
 
-
+            _bluePixelTexture = new Texture2D(GraphicsDevice, 1, 1);
+            _bluePixelTexture.SetData(new Color[] { Color.Blue });
 
             // TODO: use this.Content to load your game content here
         }
@@ -60,7 +74,8 @@ namespace MainQuest1_ClosestToTen
 
             _spriteBatch.Begin();
 
-            _spriteBatch.Draw(_whitePixelTexture, _rectangle, Color.White);
+            _spriteBatch.Draw(_redPixelTexture, _rectangle, Color.White);
+            _spriteBatch.Draw(_bluePixelTexture, _rectangle1, Color.Blue);
 
             _spriteBatch.End();
 
