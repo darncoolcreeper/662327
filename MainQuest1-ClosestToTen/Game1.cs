@@ -127,6 +127,11 @@ namespace MainQuest1_ClosestToTen
 
                     break;
                 case Screen.CreditsScreen:
+
+                    if(Keyboard.GetState().IsKeyDown(Keys.T))
+                    {
+                        _screen = Screen.TitleScreen;
+                    }
                     break;
                 case Screen.GameScreen:
                     break;
@@ -180,8 +185,9 @@ namespace MainQuest1_ClosestToTen
                 case Screen.CreditsScreen:
                     GraphicsDevice.Clear(Color.Goldenrod);
                     _spriteBatch.Begin();
-
-
+                    string creditsText = "Credits:\nMade by Isaac";
+                    _spriteBatch.DrawString(_titleTextFont, creditsText, new Vector2(_graphics.GraphicsDevice.Viewport.Width / 2 - _titleTextFont.MeasureString(creditsText).X / 2, 10), Color.Black);
+                    _spriteBatch.DrawString(_titleTextFont, "Press T to return to the Title Screen", new Vector2(_graphics.GraphicsDevice.Viewport.Width / 2 - _titleTextFont.MeasureString("Press T to return to the Title Screen").X / 2, _graphics.GraphicsDevice.Viewport.Height - 50), Color.Black);
 
                     _spriteBatch.End();
 
