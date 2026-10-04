@@ -21,6 +21,10 @@ namespace MainQuest1_ClosestToTen
 
         private Texture2D _monogameLogoTexture;
 
+        private float _timeRemaining = 10f;
+
+        private SpriteFont _timerFont;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -38,6 +42,7 @@ namespace MainQuest1_ClosestToTen
         protected override void LoadContent()
         {
             _monogameLogoTexture = Content.Load<Texture2D>("logo");
+            _timerFont = Content.Load<SpriteFont>("Timer");
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             //int rectangleWidth = 200;
@@ -87,6 +92,14 @@ namespace MainQuest1_ClosestToTen
                 Exit();
 
             // TODO: Add your update logic here
+            float secondsPassed = gameTime.ElapsedGameTime.Milliseconds / 1000f;
+
+            _timeRemaining -= secondsPassed;
+
+            if (_timeRemaining < 0)
+            {
+                _timeRemaining = 0;
+            }
 
             base.Update(gameTime);
         }
@@ -102,6 +115,18 @@ namespace MainQuest1_ClosestToTen
             _spriteBatch.Draw(_monogameLogoTexture, _rectangle1, Color.White);
             _spriteBatch.Draw(_monogameLogoTexture, _rectangle2, Color.White);
             _spriteBatch.Draw(_monogameLogoTexture, _rectangle3, Color.White);
+
+            Vector2 timerSize = _timerFont.MeasureString(_timeRemaining.ToString());
+
+            
+            Vector2 timerPosition = new Vector2(_graphics.GraphicsDevice.Viewport.Width - _timerFont.MeasureString(_timeRemaining.ToString("0.0")).X - 10, 10);
+            
+
+            _spriteBatch.DrawString(_timerFont, _timeRemaining.ToString("0.0"), timerPosition + new Vector2(2, 2), new Color(242f / 255, 70f / 255, 80f / 255, 1f));
+            _spriteBatch.DrawString(_timerFont, _timeRemaining.ToString("0.0"), timerPosition, new Color(252f / 255, 234f / 255, 51f / 255, 1f));
+            
+            
+            //_spriteBatch.DrawString(_timerFont, _timeRemaining.ToString(), Vector2.Zero, Color.Black);
 
             _spriteBatch.End();
 
