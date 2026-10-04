@@ -34,3 +34,11 @@
 /processorParam:Version=3.8.5.0
 /build:Timer.spritefont
 
+#begin TitleText.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/processorParam:Version=3.8.5.0
+/build:TitleText.spritefont
+
