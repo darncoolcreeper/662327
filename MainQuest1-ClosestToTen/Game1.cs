@@ -134,10 +134,29 @@ namespace MainQuest1_ClosestToTen
                     }
                     break;
                 case Screen.GameScreen:
+                    if (Keyboard.GetState().IsKeyDown(Keys.P))
+                    {
+                        _screen = Screen.PauseScreen;
+                    }
+                    else if (Keyboard.GetState().IsKeyDown(Keys.O)) // simulate game over
+                    {
+                        _screen = Screen.GameOverScreen;
+                        _timeRemaining = 3f;
+                    }
                     break;
                 case Screen.PauseScreen:
+                    if (Keyboard.GetState().IsKeyDown(Keys.R))
+                    {
+                        _screen = Screen.GameScreen;
+                    }
                     break;
                 case Screen.GameOverScreen:
+                    _timeRemaining -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    if (_timeRemaining < 0)
+                    {
+                        _screen = Screen.TitleScreen;
+                    }
+
                     break;
             }
 
@@ -203,12 +222,22 @@ namespace MainQuest1_ClosestToTen
 
                     break;
                 case Screen.PauseScreen:
+                    GraphicsDevice.Clear(Color.DarkOrchid);
+                    _spriteBatch.Begin();
 
+                    _spriteBatch.DrawString(_titleTextFont, "Paused\nPress R to Resume", new Vector2(_graphics.GraphicsDevice.Viewport.Width / 2 - _titleTextFont.MeasureString("Paused\nPress R to Resume").X / 2, _graphics.GraphicsDevice.Viewport.Height / 2 - _titleTextFont.MeasureString("Paused\nPress R to Resume").Y / 2), Color.Silver);
+
+                    _spriteBatch.End();
 
 
                     break;
                 case Screen.GameOverScreen:
+                    GraphicsDevice.Clear(Color.Black);
+                    _spriteBatch.Begin();
 
+                    _spriteBatch.DrawString(_titleTextFont, "Game Over", new Vector2(_graphics.GraphicsDevice.Viewport.Width / 2 - _titleTextFont.MeasureString("Game Over").X / 2, _graphics.GraphicsDevice.Viewport.Height / 2 - _titleTextFont.MeasureString("Game Over").Y / 2), Color.Red);
+
+                    _spriteBatch.End();
 
 
 
