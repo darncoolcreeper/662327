@@ -36,18 +36,26 @@ namespace MainQuest1_ClosestToTen
 
         protected override void LoadContent()
         {
+            _monogameLogoTexture = Content.Load<Texture2D>("logo");
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            int rectangleWidth = 200;
-            int rectangleHeight = 100;
+            //int rectangleWidth = 200;
+            //int rectangleHeight = 100;
+
+            int rectangleWidth = _monogameLogoTexture.Width;
+            int rectangleHeight = _monogameLogoTexture.Height;
+
+            int rectangle1Width = 200;
+            int rectangle1Height = 100;
+
             int x = 0;
             int y = (GraphicsDevice.Viewport.Height - rectangleHeight);
 
-            int x1 = (GraphicsDevice.Viewport.Width - rectangleWidth);
-            int y1 = (GraphicsDevice.Viewport.Height - rectangleHeight);
+            int x1 = (GraphicsDevice.Viewport.Width - rectangle1Width);
+            int y1 = (GraphicsDevice.Viewport.Height - rectangle1Height);
 
             _rectangle = new Rectangle(x, y, rectangleWidth, rectangleHeight);
-            _rectangle1 = new Rectangle(x1, y1, rectangleWidth, rectangleHeight);
+            _rectangle1 = new Rectangle(x1, y1, rectangle1Width, rectangle1Height);
             _whitePixelTexture = new Texture2D(GraphicsDevice, 1, 1);
             _whitePixelTexture.SetData(new Color[] { Color.White });
 
@@ -57,7 +65,7 @@ namespace MainQuest1_ClosestToTen
             _bluePixelTexture = new Texture2D(GraphicsDevice, 1, 1);
             _bluePixelTexture.SetData(new Color[] { Color.Blue });
 
-            _monogameLogoTexture = Content.Load<Texture2D>("logo");
+            
 
             // TODO: use this.Content to load your game content here
         }
