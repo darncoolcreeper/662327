@@ -18,6 +18,8 @@ namespace MainQuest1_ClosestToTen
 
         private Texture2D _bluePixelTexture;
 
+        private Texture2D _monogameLogoTexture;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -55,6 +57,8 @@ namespace MainQuest1_ClosestToTen
             _bluePixelTexture = new Texture2D(GraphicsDevice, 1, 1);
             _bluePixelTexture.SetData(new Color[] { Color.Blue });
 
+            _monogameLogoTexture = Content.Load<Texture2D>("logo");
+
             // TODO: use this.Content to load your game content here
         }
 
@@ -74,7 +78,8 @@ namespace MainQuest1_ClosestToTen
 
             _spriteBatch.Begin();
 
-            _spriteBatch.Draw(_redPixelTexture, _rectangle, Color.White);
+            _spriteBatch.Draw(_monogameLogoTexture, _rectangle, Color.White);
+            //_spriteBatch.Draw(_redPixelTexture, _rectangle, Color.White);
             _spriteBatch.Draw(_bluePixelTexture, _rectangle1, Color.Blue);
 
             _spriteBatch.End();
