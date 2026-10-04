@@ -27,7 +27,8 @@ namespace MainQuest1_ClosestToTen
 
         private SpriteFont _titleTextFont;
 
-
+        private Rectangle _button;
+        private Rectangle _buttonBorder;
 
         enum Screen { FlashScreen, TitleScreen, CreditsScreen, GameScreen, PauseScreen, GameOverScreen };
         private Screen _screen;
@@ -80,6 +81,8 @@ namespace MainQuest1_ClosestToTen
             _rectangle2 = new Rectangle(x2, y2, rectangle1Width, rectangle1Height);
             _rectangle3 = new Rectangle(x3, y3, rectangle1Width, rectangle1Height);
 
+            _button = new Rectangle(GraphicsDevice.Viewport.Width / 2 - 100, GraphicsDevice.Viewport.Height / 2 - 50, 200, 100);
+            _buttonBorder = new Rectangle(GraphicsDevice.Viewport.Width / 2 - 120, GraphicsDevice.Viewport.Height / 2 - 70, 240, 140);
 
             _whitePixelTexture = new Texture2D(GraphicsDevice, 1, 1);
             _whitePixelTexture.SetData(new Color[] { Color.White });
@@ -137,6 +140,12 @@ namespace MainQuest1_ClosestToTen
                     if (Keyboard.GetState().IsKeyDown(Keys.P))
                     {
                         _screen = Screen.PauseScreen;
+                    }
+                    else if (_button.Contains(Mouse.GetState().Position)
+                        && Mouse.GetState().LeftButton == ButtonState.Pressed)
+                    {
+                        _screen = Screen.GameOverScreen;
+                        _timeRemaining = 2f; // YUCK!
                     }
                     else if (Keyboard.GetState().IsKeyDown(Keys.O)) // simulate game over
                     {
@@ -215,7 +224,8 @@ namespace MainQuest1_ClosestToTen
                     GraphicsDevice.Clear(Color.DarkGray);
                     _spriteBatch.Begin();
 
-
+                    _spriteBatch.Draw(_whitePixelTexture, _buttonBorder, Color.Black);
+                    _spriteBatch.Draw(_whitePixelTexture, _button, Color.Red);
 
                     _spriteBatch.End();
 
