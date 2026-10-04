@@ -145,8 +145,8 @@ namespace MainQuest1_ClosestToTen
                     {
                         _screen = Screen.PauseScreen;
                     }
-                    else if (_button.Contains(Mouse.GetState().Position)
-                        && Mouse.GetState().LeftButton == ButtonState.Pressed)
+                    else if ((_button.Contains(Mouse.GetState().Position)
+                        && Mouse.GetState().LeftButton == ButtonState.Pressed) || Keyboard.GetState().IsKeyDown(Keys.Space) && _timeRemaining > 1)
                     {
                         finalScore = _timeRemaining <= 10 ? 100 * _timeRemaining : 0;
                         _screen = Screen.GameOverScreen;
