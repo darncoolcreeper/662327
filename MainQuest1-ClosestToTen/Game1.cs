@@ -21,7 +21,7 @@ namespace MainQuest1_ClosestToTen
 
         private Texture2D _monogameLogoTexture;
 
-        private float _timeRemaining = 5f;
+        private float _timeRemaining = 3f;
 
         private SpriteFont _timerFont;
 
@@ -29,6 +29,8 @@ namespace MainQuest1_ClosestToTen
 
         private Rectangle _button;
         private Rectangle _buttonBorder;
+
+        private float finalScore = 0f;
 
         enum Screen { FlashScreen, TitleScreen, CreditsScreen, GameScreen, PauseScreen, GameOverScreen };
         private Screen _screen;
@@ -121,6 +123,7 @@ namespace MainQuest1_ClosestToTen
                     if(Keyboard.GetState().IsKeyDown(Keys.Space))
                     {
                         _screen = Screen.GameScreen;
+                        
                     }
                     if (Keyboard.GetState().IsKeyDown(Keys.C))
                     {
@@ -137,6 +140,7 @@ namespace MainQuest1_ClosestToTen
                     }
                     break;
                 case Screen.GameScreen:
+                    _timeRemaining += (float)gameTime.ElapsedGameTime.TotalSeconds;
                     if (Keyboard.GetState().IsKeyDown(Keys.P))
                     {
                         _screen = Screen.PauseScreen;
@@ -144,6 +148,7 @@ namespace MainQuest1_ClosestToTen
                     else if (_button.Contains(Mouse.GetState().Position)
                         && Mouse.GetState().LeftButton == ButtonState.Pressed)
                     {
+                        finalScore = _timeRemaining <= 10 ? 100 * _timeRemaining : 0;
                         _screen = Screen.GameOverScreen;
                         _timeRemaining = 2f; // YUCK!
                     }
@@ -224,8 +229,20 @@ namespace MainQuest1_ClosestToTen
                     GraphicsDevice.Clear(Color.DarkGray);
                     _spriteBatch.Begin();
 
+                    timerSize = _timerFont.MeasureString(_timeRemaining.ToString());
+
+
+                    
+
+                    //display timer in middle of screen
+                    timerPosition = new Vector2(_graphics.GraphicsDevice.Viewport.Width / 2 - _timerFont.MeasureString(_timeRemaining.ToString("0.0")).X / 2, _graphics.GraphicsDevice.Viewport.Height / 2 - _timerFont.MeasureString(_timeRemaining.ToString("0.0")).Y / 2);
+                    
+
+                    
                     _spriteBatch.Draw(_whitePixelTexture, _buttonBorder, Color.Black);
                     _spriteBatch.Draw(_whitePixelTexture, _button, Color.Red);
+                    _spriteBatch.DrawString(_timerFont, _timeRemaining.ToString("0.0"), timerPosition + new Vector2(2, 2), new Color(242f / 255, 70f / 255, 80f / 255, 1f));
+                    _spriteBatch.DrawString(_timerFont, _timeRemaining.ToString("0.0"), timerPosition, new Color(252f / 255, 234f / 255, 51f / 255, 1f));
 
                     _spriteBatch.End();
 
@@ -245,7 +262,11 @@ namespace MainQuest1_ClosestToTen
                     GraphicsDevice.Clear(Color.Black);
                     _spriteBatch.Begin();
 
+                    string finalScoreString = finalScore.ToString("0");
+                    string scoreText = $"Final Score: {finalScoreString}";
                     _spriteBatch.DrawString(_titleTextFont, "Game Over", new Vector2(_graphics.GraphicsDevice.Viewport.Width / 2 - _titleTextFont.MeasureString("Game Over").X / 2, _graphics.GraphicsDevice.Viewport.Height / 2 - _titleTextFont.MeasureString("Game Over").Y / 2), Color.Red);
+                    _spriteBatch.DrawString(_titleTextFont, scoreText, new Vector2(_graphics.GraphicsDevice.Viewport.Width / 2 - _titleTextFont.MeasureString(scoreText).X / 2, _graphics.GraphicsDevice.Viewport.Height / 2 - _titleTextFont.MeasureString(scoreText).Y / 2 + 50), Color.Yellow);
+
 
                     _spriteBatch.End();
 
