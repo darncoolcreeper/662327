@@ -30,7 +30,10 @@ namespace MainQuest1_ClosestToTen
         private Rectangle _button;
         private Rectangle _buttonBorder;
 
+        private float highestScore = 0;
         private float finalScore = 0f;
+
+        private bool gotHighScore = false;
 
         enum Screen { FlashScreen, TitleScreen, CreditsScreen, GameScreen, PauseScreen, GameOverScreen };
         private Screen _screen;
@@ -120,7 +123,8 @@ namespace MainQuest1_ClosestToTen
                     }
                     break;
                 case Screen.TitleScreen:
-                    if(Keyboard.GetState().IsKeyDown(Keys.Space))
+                    gotHighScore = false;
+                    if (Keyboard.GetState().IsKeyDown(Keys.Space))
                     {
                         _screen = Screen.GameScreen;
                         
@@ -149,6 +153,11 @@ namespace MainQuest1_ClosestToTen
                         && Mouse.GetState().LeftButton == ButtonState.Pressed) || Keyboard.GetState().IsKeyDown(Keys.Space) && _timeRemaining > 1)
                     {
                         finalScore = _timeRemaining <= 10 ? 100 * _timeRemaining : 0;
+                        if (finalScore > highestScore)
+                        {
+                            highestScore = finalScore;
+                            gotHighScore = true;
+                        }
                         _screen = Screen.GameOverScreen;
                         _timeRemaining = 2f; // YUCK!
                     }
@@ -267,6 +276,16 @@ namespace MainQuest1_ClosestToTen
                     _spriteBatch.DrawString(_titleTextFont, "Game Over", new Vector2(_graphics.GraphicsDevice.Viewport.Width / 2 - _titleTextFont.MeasureString("Game Over").X / 2, _graphics.GraphicsDevice.Viewport.Height / 2 - _titleTextFont.MeasureString("Game Over").Y / 2), Color.Red);
                     _spriteBatch.DrawString(_titleTextFont, scoreText, new Vector2(_graphics.GraphicsDevice.Viewport.Width / 2 - _titleTextFont.MeasureString(scoreText).X / 2, _graphics.GraphicsDevice.Viewport.Height / 2 - _titleTextFont.MeasureString(scoreText).Y / 2 + 50), Color.Yellow);
 
+                    if (gotHighScore)
+                    {
+                        _spriteBatch.DrawString(_titleTextFont, "New High Score!", new Vector2(_graphics.GraphicsDevice.Viewport.Width / 2 - _titleTextFont.MeasureString("New High Score!").X / 2, _graphics.GraphicsDevice.Viewport.Height / 2 - _titleTextFont.MeasureString("New High Score!").Y / 2 + 100), Color.Green);
+                    }
+                    else
+                    {
+                        string highScoreString = highestScore.ToString("0");
+                        string highScoreText = $"High Score: {highScoreString}";
+                        _spriteBatch.DrawString(_titleTextFont, highScoreText, new Vector2(_graphics.GraphicsDevice.Viewport.Width / 2 - _titleTextFont.MeasureString(highScoreText).X / 2, _graphics.GraphicsDevice.Viewport.Height / 2 - _titleTextFont.MeasureString(highScoreText).Y / 2 + 100), Color.Cyan);
+                    }
 
                     _spriteBatch.End();
 
