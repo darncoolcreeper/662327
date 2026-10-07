@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
+
 namespace MainQuest2_SuperStroop
 {
     public class Game1 : Game
@@ -24,9 +25,11 @@ namespace MainQuest2_SuperStroop
 
         private Texture2D _whitePixelTexture;
 
+        private StroopShape[] shapes;
+
         
 
-        public Game1()
+    public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -46,19 +49,28 @@ namespace MainQuest2_SuperStroop
             _triangleTexture = Content.Load<Texture2D>("triangle");
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            _whitePixelTexture = new Texture2D(GraphicsDevice, 1, 1);
+            _whitePixelTexture.SetData(new Color[] { Color.White });
+
             int x = 50;
             int y = 50;
             int rectangleWidth = 30;
             int rectangleHeight = 30;
 
 
-            _circle = new Rectangle(x, y, rectangleWidth, rectangleHeight);
-            _triangle = new Rectangle(x + 60, y, rectangleWidth, rectangleHeight);
-            _rectangle = new Rectangle(x + 120, y, rectangleWidth * 2, rectangleHeight);
-            _square = new Rectangle(x + 210, y, rectangleWidth, rectangleHeight);
+            //_circle = new Rectangle(x, y, rectangleWidth, rectangleHeight);
+            //_triangle = new Rectangle(x + 60, y, rectangleWidth, rectangleHeight);
+            //_rectangle = new Rectangle(x + 120, y, rectangleWidth * 2, rectangleHeight);
+            //_square = new Rectangle(x + 210, y, rectangleWidth, rectangleHeight);
 
-            _whitePixelTexture = new Texture2D(GraphicsDevice, 1, 1);
-            _whitePixelTexture.SetData(new Color[] { Color.White });
+            shapes = new StroopShape[]
+            {
+                new StroopShape(new Rectangle(80, 70, 70, 70), Color.Red, _circleTexture),
+                new StroopShape(new Rectangle(170, 70, 80, 80), Color.Green, _triangleTexture),
+                new StroopShape(new Rectangle(130, 170, 60, 60), Color.Blue, _whitePixelTexture),
+            };
+
+            
 
             // TODO: use this.Content to load your game content here
         }
@@ -78,10 +90,21 @@ namespace MainQuest2_SuperStroop
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             _spriteBatch.Begin();
-            _spriteBatch.Draw(_circleTexture, _circle, Color.Red);
-            _spriteBatch.Draw(_triangleTexture, _triangle, Color.Yellow);
-            _spriteBatch.Draw(_whitePixelTexture, _rectangle, Color.Blue);
-            _spriteBatch.Draw(_whitePixelTexture, _square, Color.Green);
+
+
+
+
+            //_spriteBatch.Draw(_circleTexture, _circle, Color.Red);
+            //_spriteBatch.Draw(_triangleTexture, _triangle, Color.Yellow);
+            //_spriteBatch.Draw(_whitePixelTexture, _rectangle, Color.Blue);
+            //_spriteBatch.Draw(_whitePixelTexture, _square, Color.Green);
+
+            for(int i = 0; i < shapes.Length; i++)
+            {
+                shapes[i].Draw(_spriteBatch);
+            }
+
+
 
             _spriteBatch.End();
 
