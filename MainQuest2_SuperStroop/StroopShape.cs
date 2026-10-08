@@ -11,8 +11,10 @@ namespace MainQuest2_SuperStroop
 {
     public abstract class StroopShape
     {
-        private Color _colour;
-        private Rectangle _rectangle;
+        protected Color _colour;
+
+        public Color Colour => _colour;
+        protected Rectangle _rectangle;
         private Texture2D _texture;
 
         public StroopShape(Rectangle rectangle, Color colour, Texture2D texture)
@@ -27,7 +29,7 @@ namespace MainQuest2_SuperStroop
             spriteBatch.Draw(_texture, _rectangle, _colour);
         }
 
-        public bool IsInside(Point point)
+        public virtual bool IsInside(Point point)
         {
             return _rectangle.Contains(point);
         }

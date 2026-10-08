@@ -13,5 +13,11 @@ namespace MainQuest2_SuperStroop
         public StroopCircle(Rectangle rectangle, Color colour, Texture2D texture) : base(rectangle, colour, texture)
         {
         }
+
+
+        public override bool IsInside(Point point)
+        {
+            return false;
+        }
     }
 }

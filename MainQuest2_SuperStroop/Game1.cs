@@ -95,6 +95,7 @@ namespace MainQuest2_SuperStroop
                 if (shape.IsInside(Mouse.GetState().Position))
                 {
                     //make display color the shapes color
+                    _displayColour = shape.Colour;
                     _displayText = $"Mouse over the {shape.ToString()}";
                 }
             }
