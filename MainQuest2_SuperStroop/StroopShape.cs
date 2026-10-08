@@ -26,5 +26,15 @@ namespace MainQuest2_SuperStroop
         {
             spriteBatch.Draw(_texture, _rectangle, _colour);
         }
+
+        public bool IsInside(Point point)
+        {
+            return _rectangle.Contains(point);
+        }
+
+        public override string ToString()
+        {
+            return $"{_colour} {_texture}";
+        }
     }
 }

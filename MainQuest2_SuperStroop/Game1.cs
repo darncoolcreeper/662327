@@ -56,6 +56,7 @@ namespace MainQuest2_SuperStroop
 
             _whitePixelTexture = new Texture2D(GraphicsDevice, 1, 1);
             _whitePixelTexture.SetData(new Color[] { Color.White });
+            
 
             int x = 50;
             int y = 50;
@@ -74,8 +75,9 @@ namespace MainQuest2_SuperStroop
                 new StroopShape(new Rectangle(170, 70, 80, 80), Color.Green, _triangleTexture),
                 new StroopShape(new Rectangle(130, 170, 60, 60), Color.Blue, _whitePixelTexture),
             };
-
             
+
+
 
             // TODO: use this.Content to load your game content here
         }
@@ -86,6 +88,17 @@ namespace MainQuest2_SuperStroop
                 Exit();
 
             // TODO: Add your update logic here
+
+            _displayText = "Mouse over nothing";
+            foreach (StroopShape shape in shapes)
+            {
+                if (shape.IsInside(Mouse.GetState().Position))
+                {
+                    //make display color the shapes color
+                    
+                    _displayText = $"Mouse over the {shape.ToString()}";
+                }
+            }
 
             base.Update(gameTime);
         }
@@ -109,11 +122,11 @@ namespace MainQuest2_SuperStroop
                 shapes[i].Draw(_spriteBatch);
             }
             Vector2 textPosition = new Vector2(_graphics.GraphicsDevice.Viewport.Width / 2 - _displayFont.MeasureString(_displayText).X / 2, 5);
-            //draw black outline first
+            
             _spriteBatch.DrawString(_displayFont, _displayText, new Vector2(textPosition.X +2, textPosition.Y + 2), Color.Black);
-            //put in middle screen width
+            
             _spriteBatch.DrawString(_displayFont, _displayText, new Vector2(textPosition.X, textPosition.Y), _displayColour);
-            //
+            
 
 
             _spriteBatch.End();
