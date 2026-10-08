@@ -18,7 +18,7 @@ namespace MainQuest2_SuperStroop
 
         private Rectangle _square;
 
-
+        
         private Texture2D _circleTexture;
 
         private Texture2D _triangleTexture;
@@ -27,9 +27,13 @@ namespace MainQuest2_SuperStroop
 
         private StroopShape[] shapes;
 
-        
+        private SpriteFont _displayFont;
+        private string _displayText = "Hello, Super Stroop!";
+        private Color _displayColour = Color.White;
 
-    public Game1()
+
+
+        public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -47,6 +51,7 @@ namespace MainQuest2_SuperStroop
         {
             _circleTexture = Content.Load<Texture2D>("circle");
             _triangleTexture = Content.Load<Texture2D>("triangle");
+            _displayFont = Content.Load<SpriteFont>("Display");
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             _whitePixelTexture = new Texture2D(GraphicsDevice, 1, 1);
@@ -103,7 +108,12 @@ namespace MainQuest2_SuperStroop
             {
                 shapes[i].Draw(_spriteBatch);
             }
-
+            Vector2 textPosition = new Vector2(_graphics.GraphicsDevice.Viewport.Width / 2 - _displayFont.MeasureString(_displayText).X / 2, 5);
+            //draw black outline first
+            _spriteBatch.DrawString(_displayFont, _displayText, new Vector2(textPosition.X +2, textPosition.Y + 2), Color.Black);
+            //put in middle screen width
+            _spriteBatch.DrawString(_displayFont, _displayText, new Vector2(textPosition.X, textPosition.Y), _displayColour);
+            //
 
 
             _spriteBatch.End();

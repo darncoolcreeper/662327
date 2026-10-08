@@ -26,6 +26,14 @@
 /processorParam:Version=3.8.5.1
 /build:circle.png
 
+#begin Display.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/processorParam:Version=3.8.5.1
+/build:Display.spritefont
+
 #begin triangle.png
 /importer:TextureImporter
 /processor:TextureProcessor
