@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MainQuest2_SuperStroop
 {
-    public class StroopShape
+    public abstract class StroopShape
     {
         private Color _colour;
         private Rectangle _rectangle;

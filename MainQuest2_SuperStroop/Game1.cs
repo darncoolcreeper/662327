@@ -71,9 +71,9 @@ namespace MainQuest2_SuperStroop
 
             shapes = new StroopShape[]
             {
-                new StroopShape(new Rectangle(80, 70, 70, 70), Color.Red, _circleTexture),
-                new StroopShape(new Rectangle(170, 70, 80, 80), Color.Green, _triangleTexture),
-                new StroopShape(new Rectangle(130, 170, 60, 60), Color.Blue, _whitePixelTexture),
+                new StroopCircle(new Rectangle(80, 70, 70, 70), Color.Red, _circleTexture),
+                new StroopTriangle(new Rectangle(170, 70, 80, 80), Color.Green, _triangleTexture),
+                new StroopSquare(new Rectangle(130, 170, 60, 60), Color.Blue, _whitePixelTexture),
             };
             
 
@@ -95,7 +95,6 @@ namespace MainQuest2_SuperStroop
                 if (shape.IsInside(Mouse.GetState().Position))
                 {
                     //make display color the shapes color
-                    
                     _displayText = $"Mouse over the {shape.ToString()}";
                 }
             }
