@@ -36,7 +36,7 @@ namespace MainQuest2_SuperStroop
 
         public override string ToString()
         {
-            return $"{_colour} {_texture}";
+            return $"{_colour.ToColorName()} {_texture}";
         }
     }
 }

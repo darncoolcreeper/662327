@@ -22,7 +22,7 @@ namespace MainQuest2_SuperStroop
 
         public override string ToString()
         {
-            return $"{_colour} square";
+            return $"{_colour.ToColorName()} square";
         }
     }
 }
