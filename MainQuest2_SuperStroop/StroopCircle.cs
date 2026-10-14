@@ -11,7 +11,7 @@ namespace MainQuest2_SuperStroop
 {
     internal class StroopCircle : StroopShape
     {
-        public StroopCircle(Game game, Rectangle rectangle, Color colour, Texture2D texture) : base(game, rectangle, colour, texture)
+        public StroopCircle(Game game, Color colour, Texture2D texture) : base(game, colour, texture)
         {
         }
 

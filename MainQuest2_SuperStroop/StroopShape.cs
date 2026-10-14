@@ -28,7 +28,7 @@ namespace MainQuest2_SuperStroop
         static private Random random = new Random();
         private int size;
 
-        public StroopShape(Game game, Rectangle rectangle, Color colour, Texture2D texture) : base(game)
+        public StroopShape(Game game, Color colour, Texture2D texture) : base(game)
         {
             _colour = colour;
             //_rectangle = rectangle;
