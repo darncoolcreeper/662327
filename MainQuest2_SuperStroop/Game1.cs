@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Linq;
 
 
 
@@ -20,7 +21,7 @@ namespace MainQuest2_SuperStroop
 
         private Rectangle _square;
 
-        
+        private int lives = 3;
         private Texture2D _circleTexture;
 
         private Texture2D _triangleTexture;
@@ -137,6 +138,14 @@ namespace MainQuest2_SuperStroop
                     requestColor = _shapeRequester.RequestColor();
                     requestText = $"Please click the {requestedShape.ToString()}";
                 }
+                //if mouse is on a different shape, update the requested shape and color
+                else if(shapes.Any(s => s.IsInside(mouseState.Position)))
+                {
+                    lives--;
+                    requestedShape = _shapeRequester.RequestShape();
+                    requestColor = _shapeRequester.RequestColor();
+                    requestText = $"Please click the {requestedShape.ToString()}";
+                }
 
             }
             prevMouseState = mouseState;
@@ -171,6 +180,8 @@ namespace MainQuest2_SuperStroop
 
             _spriteBatch.DrawString(_displayFont, requestText, new Vector2(textPosition.X, textPosition.Y), requestColor);
 
+            _spriteBatch.DrawString(_displayFont, $"Lives: {lives}", new Vector2(7, 7), Color.Black);
+            _spriteBatch.DrawString(_displayFont, $"Lives: {lives}", new Vector2(5, 5), Color.White);
 
             _spriteBatch.End();
 
