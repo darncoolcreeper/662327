@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 
 
 
@@ -39,6 +40,11 @@ namespace MainQuest2_SuperStroop
         private Color[] colors;
 
         private Color requestColor;
+
+        private MouseState mouseState;
+        private MouseState prevMouseState;
+
+        private StroopShape requestedShape;
 
         public Game1()
         {
@@ -94,7 +100,7 @@ namespace MainQuest2_SuperStroop
             _shapeRequester = new ShapeRequester(shapes, colors);
 
 
-            StroopShape requestedShape = _shapeRequester.RequestShape();
+            requestedShape = _shapeRequester.RequestShape();
             requestColor = _shapeRequester.RequestColor();
             requestText = $"Please click the {requestedShape.ToString()}";
 
@@ -118,6 +124,22 @@ namespace MainQuest2_SuperStroop
                     _displayText = $"Mouse over the {shape.ToString()}";
                 }
             }
+
+            mouseState = Mouse.GetState();
+
+            if (mouseState.LeftButton == ButtonState.Pressed &&
+                prevMouseState.LeftButton == ButtonState.Released)
+            {
+                //if mouse is over the requested shape, update the requested shape and color
+                if(requestedShape.IsInside(mouseState.Position))
+                {
+                    requestedShape = _shapeRequester.RequestShape();
+                    requestColor = _shapeRequester.RequestColor();
+                    requestText = $"Please click the {requestedShape.ToString()}";
+                }
+
+            }
+            prevMouseState = mouseState;
 
             base.Update(gameTime);
         }
