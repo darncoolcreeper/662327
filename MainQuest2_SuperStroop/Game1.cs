@@ -233,7 +233,11 @@ namespace MainQuest2_SuperStroop
             _spriteBatch.DrawString(_displayFont, $"Points: {points}", new Vector2(_graphics.GraphicsDevice.Viewport.Width - _displayFont.MeasureString($"Points: {points}").X - 7, 7), Color.Black);
             _spriteBatch.DrawString(_displayFont, $"Points: {points}", new Vector2(_graphics.GraphicsDevice.Viewport.Width - _displayFont.MeasureString($"Points: {points}").X - 5, 5), Color.White);
 
-            if(lives <= 0)
+
+            _spriteBatch.DrawString(_displayFont, $"Streak: {streak}", new Vector2(_graphics.GraphicsDevice.Viewport.Width - _displayFont.MeasureString($"Streak: {streak}").X - 7, 7 + 30), Color.Black);
+            _spriteBatch.DrawString(_displayFont, $"Streak: {streak}", new Vector2(_graphics.GraphicsDevice.Viewport.Width - _displayFont.MeasureString($"Streak: {streak}").X - 5, 5 + 30), Color.White);
+
+            if (lives <= 0)
             {
                 _spriteBatch.DrawString(_displayFont, $"Game Over! Final Score: {pointsBeforeGameOver}", new Vector2(_graphics.GraphicsDevice.Viewport.Width / 2 - _displayFont.MeasureString($"Game Over! Final Score: {pointsBeforeGameOver}").X / 2 + 2, _graphics.GraphicsDevice.Viewport.Height - _displayFont.MeasureString($"Game Over! Final Score: {pointsBeforeGameOver}").Y / 2 + 2 - 15), Color.Black);
                 _spriteBatch.DrawString(_displayFont, $"Game Over! Final Score: {pointsBeforeGameOver}", new Vector2(_graphics.GraphicsDevice.Viewport.Width / 2 - _displayFont.MeasureString($"Game Over! Final Score: {pointsBeforeGameOver}").X / 2, _graphics.GraphicsDevice.Viewport.Height - _displayFont.MeasureString($"Game Over! Final Score: {pointsBeforeGameOver}").Y / 2 - 15), Color.Red);
