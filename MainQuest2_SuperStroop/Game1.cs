@@ -87,12 +87,18 @@ namespace MainQuest2_SuperStroop
             //_rectangle = new Rectangle(x + 120, y, rectangleWidth * 2, rectangleHeight);
             //_square = new Rectangle(x + 210, y, rectangleWidth, rectangleHeight);
 
-            shapes = new StroopShape[]
-            {
-                new StroopCircle(this, new Rectangle(80, 70, 70, 70), Color.Red, _circleTexture),
-                new StroopTriangle(this, new Rectangle(170, 70, 80, 80), Color.Green, _triangleTexture),
-                new StroopSquare(this, new Rectangle(130, 170, 60, 60), Color.Blue, _whitePixelTexture),
+            //shapes = new StroopShape[]
+            //{
+            //    new StroopCircle(this, new Rectangle(80, 70, 70, 70), Color.Red, _circleTexture),
+            //    new StroopTriangle(this, new Rectangle(170, 70, 80, 80), Color.Green, _triangleTexture),
+            //    new StroopSquare(this, new Rectangle(130, 170, 60, 60), Color.Blue, _whitePixelTexture),
+            //};
+            shapes = new StroopShape[] {
+                new StroopCircle(this, new Rectangle(70, 110, 50, 50), Color.Red, _circleTexture),
+                new StroopTriangle(this, new Rectangle(70, 190, 50, 50), Color.Green, _triangleTexture),
+                new StroopSquare(this, new Rectangle(70, 270, 50, 50), Color.Blue, _whitePixelTexture),
             };
+
 
             colors = new Color[shapes.Length];
             for(int i = 0; i < shapes.Length; i++)
