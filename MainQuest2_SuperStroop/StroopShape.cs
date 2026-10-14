@@ -6,6 +6,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.Xna.Framework.MathHelper;
+using Random = System.Random;
+
+
 
 namespace MainQuest2_SuperStroop
 {
@@ -21,15 +25,24 @@ namespace MainQuest2_SuperStroop
         private float _elapsedTime;
         private float _movementDuration;
 
+        static private Random random = new Random();
+        private int size;
+
         public StroopShape(Game game, Rectangle rectangle, Color colour, Texture2D texture) : base(game)
         {
             _colour = colour;
-            _rectangle = rectangle;
+            //_rectangle = rectangle;
             _texture = texture;
-            _startPosition = new Vector2(rectangle.X, rectangle.Y);
-            _endPosition = new Vector2(rectangle.X + Game.GraphicsDevice.Viewport.Width - 2 * rectangle.X, rectangle.Y);
+            //_startPosition = new Vector2(rectangle.X, rectangle.Y);
+            //_endPosition = new Vector2(rectangle.X + Game.GraphicsDevice.Viewport.Width - 2 * rectangle.X, rectangle.Y);
+            //_elapsedTime = 0f;
+            //_movementDuration = 5f;
+            size = random.Next(50, 100);
+            _startPosition = new Vector2(random.Next(size, game.GraphicsDevice.Viewport.Width - size), random.Next(size, game.GraphicsDevice.Viewport.Height - size));
+            _endPosition = new Vector2(random.Next(size, game.GraphicsDevice.Viewport.Width - size), random.Next(size, game.GraphicsDevice.Viewport.Height - size));
+            _rectangle = new Rectangle((int)_startPosition.X, (int)_startPosition.Y, size, size);
             _elapsedTime = 0f;
-            _movementDuration = 5f;
+            _movementDuration = (float)(2f + 3 * random.NextDouble());
         }
 
 
@@ -65,6 +78,10 @@ namespace MainQuest2_SuperStroop
             }
 
             base.Update(gameTime);
+        }
+        static public float RandomNumber()
+        {
+            return (float)random.NextDouble();
         }
     }
 }
