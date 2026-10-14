@@ -47,6 +47,8 @@ namespace MainQuest2_SuperStroop
 
         private StroopShape requestedShape;
         private int points = 0;
+
+        private float timeRemaining = 3f;
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -115,17 +117,18 @@ namespace MainQuest2_SuperStroop
 
             // TODO: Add your update logic here
 
-            _displayText = "Mouse over nothing";
-            foreach (StroopShape shape in shapes)
-            {
-                if (shape.IsInside(Mouse.GetState().Position))
-                {
-                    //make display color the shapes color
-                    _displayColour = shape.Colour;
-                    _displayText = $"Mouse over the {shape.ToString()}";
-                }
-            }
+            //_displayText = "Mouse over nothing";
+            //foreach (StroopShape shape in shapes)
+            //{
+            //    if (shape.IsInside(Mouse.GetState().Position))
+            //    {
+            //        //make display color the shapes color
+            //        _displayColour = shape.Colour;
+            //        _displayText = $"Mouse over the {shape.ToString()}";
+            //    }
+            //}
 
+            timeRemaining -= (float)gameTime.ElapsedGameTime.TotalSeconds;
             mouseState = Mouse.GetState();
 
             if (mouseState.LeftButton == ButtonState.Pressed &&
@@ -134,6 +137,7 @@ namespace MainQuest2_SuperStroop
                 //if mouse is over the requested shape, update the requested shape and color
                 if(requestedShape.IsInside(mouseState.Position))
                 {
+                    timeRemaining = 3f;
                     points += 100;
                     requestedShape = _shapeRequester.RequestShape();
                     requestColor = _shapeRequester.RequestColor();
@@ -142,12 +146,21 @@ namespace MainQuest2_SuperStroop
                 //if mouse is on a different shape, update the requested shape and color
                 else if(shapes.Any(s => s.IsInside(mouseState.Position)))
                 {
+                    timeRemaining = 3f;
                     lives--;
                     requestedShape = _shapeRequester.RequestShape();
                     requestColor = _shapeRequester.RequestColor();
                     requestText = requestedShape.ToString();
                 }
 
+            }
+            if(timeRemaining <= 0)
+            {
+                timeRemaining = 3f;
+                lives--;
+                requestedShape = _shapeRequester.RequestShape();
+                requestColor = _shapeRequester.RequestColor();
+                requestText = requestedShape.ToString();
             }
             prevMouseState = mouseState;
 
@@ -160,7 +173,7 @@ namespace MainQuest2_SuperStroop
 
             _spriteBatch.Begin();
 
-
+            string stringTimeRemaining = timeRemaining.ToString("0.0");
 
 
             //_spriteBatch.Draw(_circleTexture, _circle, Color.Red);
@@ -168,18 +181,18 @@ namespace MainQuest2_SuperStroop
             //_spriteBatch.Draw(_whitePixelTexture, _rectangle, Color.Blue);
             //_spriteBatch.Draw(_whitePixelTexture, _square, Color.Green);
 
-            for(int i = 0; i < shapes.Length; i++)
+            for (int i = 0; i < shapes.Length; i++)
             {
                 shapes[i].Draw(_spriteBatch);
             }
-            Vector2 textPosition = new Vector2(_graphics.GraphicsDevice.Viewport.Width / 2 - _displayFont.MeasureString(requestText).X / 2, 5);
+            Vector2 textPosition = new Vector2(_graphics.GraphicsDevice.Viewport.Width / 2 - _displayFont.MeasureString($"{requestText} {stringTimeRemaining}").X / 2, 5);
 
             //_spriteBatch.DrawString(_displayFont, _displayText, new Vector2(textPosition.X +2, textPosition.Y + 2), Color.Black);
 
             //_spriteBatch.DrawString(_displayFont, _displayText, new Vector2(textPosition.X, textPosition.Y), _displayColour);
-            _spriteBatch.DrawString(_displayFont, requestText, new Vector2(textPosition.X + 2, textPosition.Y + 2), Color.Black);
+            _spriteBatch.DrawString(_displayFont, $"{requestText} {stringTimeRemaining}", new Vector2(textPosition.X + 2, textPosition.Y + 2), Color.Black);
 
-            _spriteBatch.DrawString(_displayFont, requestText, new Vector2(textPosition.X, textPosition.Y), requestColor);
+            _spriteBatch.DrawString(_displayFont, $"{requestText} {stringTimeRemaining}", new Vector2(textPosition.X, textPosition.Y), requestColor);
 
             _spriteBatch.DrawString(_displayFont, $"Lives: {lives}", new Vector2(7, 7), Color.Black);
             _spriteBatch.DrawString(_displayFont, $"Lives: {lives}", new Vector2(5, 5), Color.White);
