@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 
+
 namespace MainQuest2_SuperStroop
 {
     public class Game1 : Game
@@ -31,7 +32,13 @@ namespace MainQuest2_SuperStroop
         private string _displayText = "Hello, Super Stroop!";
         private Color _displayColour = Color.White;
 
+        private string requestText = "Please click on the shape that is the color requested";
 
+        private ShapeRequester _shapeRequester;
+
+        private Color[] colors;
+
+        private Color requestColor;
 
         public Game1()
         {
@@ -75,9 +82,21 @@ namespace MainQuest2_SuperStroop
                 new StroopTriangle(new Rectangle(170, 70, 80, 80), Color.Green, _triangleTexture),
                 new StroopSquare(new Rectangle(130, 170, 60, 60), Color.Blue, _whitePixelTexture),
             };
-            
+
+            colors = new Color[shapes.Length];
+            for(int i = 0; i < shapes.Length; i++)
+            {
+                colors[i] = shapes[i].Colour;
+            }
 
 
+
+            _shapeRequester = new ShapeRequester(shapes, colors);
+
+
+            StroopShape requestedShape = _shapeRequester.RequestShape();
+            requestColor = _shapeRequester.RequestColor();
+            requestText = $"Please click the {requestedShape.ToString()}";
 
             // TODO: use this.Content to load your game content here
         }
@@ -121,12 +140,14 @@ namespace MainQuest2_SuperStroop
             {
                 shapes[i].Draw(_spriteBatch);
             }
-            Vector2 textPosition = new Vector2(_graphics.GraphicsDevice.Viewport.Width / 2 - _displayFont.MeasureString(_displayText).X / 2, 5);
-            
-            _spriteBatch.DrawString(_displayFont, _displayText, new Vector2(textPosition.X +2, textPosition.Y + 2), Color.Black);
-            
-            _spriteBatch.DrawString(_displayFont, _displayText, new Vector2(textPosition.X, textPosition.Y), _displayColour);
-            
+            Vector2 textPosition = new Vector2(_graphics.GraphicsDevice.Viewport.Width / 2 - _displayFont.MeasureString(requestText).X / 2, 5);
+
+            //_spriteBatch.DrawString(_displayFont, _displayText, new Vector2(textPosition.X +2, textPosition.Y + 2), Color.Black);
+
+            //_spriteBatch.DrawString(_displayFont, _displayText, new Vector2(textPosition.X, textPosition.Y), _displayColour);
+            _spriteBatch.DrawString(_displayFont, requestText, new Vector2(textPosition.X + 2, textPosition.Y + 2), Color.Black);
+
+            _spriteBatch.DrawString(_displayFont, requestText, new Vector2(textPosition.X, textPosition.Y), requestColor);
 
 
             _spriteBatch.End();
