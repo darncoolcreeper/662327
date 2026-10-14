@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MainQuest2_SuperStroop
 {
-    public abstract class StroopShape
+    public abstract class StroopShape : GameComponent
     {
         protected Color _colour;
 
@@ -17,12 +17,13 @@ namespace MainQuest2_SuperStroop
         protected Rectangle _rectangle;
         private Texture2D _texture;
 
-        public StroopShape(Rectangle rectangle, Color colour, Texture2D texture)
+        public StroopShape(Game game, Rectangle rectangle, Color colour, Texture2D texture) : base(game)
         {
-            _rectangle = rectangle;
             _colour = colour;
+            _rectangle = rectangle;
             _texture = texture;
         }
+
 
         public void Draw(SpriteBatch spriteBatch)
         {

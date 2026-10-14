@@ -49,11 +49,13 @@ namespace MainQuest2_SuperStroop
         private int points = 0;
 
         private float timeRemaining = 3f;
-        public Game1()
+        public Game1() 
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+
+            
         }
 
         protected override void Initialize()
@@ -87,9 +89,9 @@ namespace MainQuest2_SuperStroop
 
             shapes = new StroopShape[]
             {
-                new StroopCircle(new Rectangle(80, 70, 70, 70), Color.Red, _circleTexture),
-                new StroopTriangle(new Rectangle(170, 70, 80, 80), Color.Green, _triangleTexture),
-                new StroopSquare(new Rectangle(130, 170, 60, 60), Color.Blue, _whitePixelTexture),
+                new StroopCircle(this, new Rectangle(80, 70, 70, 70), Color.Red, _circleTexture),
+                new StroopTriangle(this, new Rectangle(170, 70, 80, 80), Color.Green, _triangleTexture),
+                new StroopSquare(this, new Rectangle(130, 170, 60, 60), Color.Blue, _whitePixelTexture),
             };
 
             colors = new Color[shapes.Length];
@@ -106,6 +108,11 @@ namespace MainQuest2_SuperStroop
             requestedShape = _shapeRequester.RequestShape();
             requestColor = _shapeRequester.RequestColor();
             requestText = $"Click the {requestedShape.ToString()}";
+
+            foreach (StroopShape shape in shapes)
+            {
+                Components.Add(shape);
+            }
 
             // TODO: use this.Content to load your game content here
         }
