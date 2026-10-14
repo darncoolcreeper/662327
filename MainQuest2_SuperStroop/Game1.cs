@@ -46,7 +46,7 @@ namespace MainQuest2_SuperStroop
         private MouseState prevMouseState;
 
         private StroopShape requestedShape;
-
+        private int points = 0;
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -103,7 +103,7 @@ namespace MainQuest2_SuperStroop
 
             requestedShape = _shapeRequester.RequestShape();
             requestColor = _shapeRequester.RequestColor();
-            requestText = $"Please click the {requestedShape.ToString()}";
+            requestText = $"Click the {requestedShape.ToString()}";
 
             // TODO: use this.Content to load your game content here
         }
@@ -134,9 +134,10 @@ namespace MainQuest2_SuperStroop
                 //if mouse is over the requested shape, update the requested shape and color
                 if(requestedShape.IsInside(mouseState.Position))
                 {
+                    points += 100;
                     requestedShape = _shapeRequester.RequestShape();
                     requestColor = _shapeRequester.RequestColor();
-                    requestText = $"Please click the {requestedShape.ToString()}";
+                    requestText = requestedShape.ToString();
                 }
                 //if mouse is on a different shape, update the requested shape and color
                 else if(shapes.Any(s => s.IsInside(mouseState.Position)))
@@ -144,7 +145,7 @@ namespace MainQuest2_SuperStroop
                     lives--;
                     requestedShape = _shapeRequester.RequestShape();
                     requestColor = _shapeRequester.RequestColor();
-                    requestText = $"Please click the {requestedShape.ToString()}";
+                    requestText = requestedShape.ToString();
                 }
 
             }
@@ -182,6 +183,9 @@ namespace MainQuest2_SuperStroop
 
             _spriteBatch.DrawString(_displayFont, $"Lives: {lives}", new Vector2(7, 7), Color.Black);
             _spriteBatch.DrawString(_displayFont, $"Lives: {lives}", new Vector2(5, 5), Color.White);
+
+            _spriteBatch.DrawString(_displayFont, $"Points: {points}", new Vector2(_graphics.GraphicsDevice.Viewport.Width - _displayFont.MeasureString($"Points: {points}").X - 7, 7), Color.Black);
+            _spriteBatch.DrawString(_displayFont, $"Points: {points}", new Vector2(_graphics.GraphicsDevice.Viewport.Width - _displayFont.MeasureString($"Points: {points}").X - 5, 5), Color.White);
 
             _spriteBatch.End();
 
