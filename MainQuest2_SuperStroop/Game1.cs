@@ -97,6 +97,11 @@ namespace MainQuest2_SuperStroop
                 new StroopCircle(this, Color.Red, _circleTexture),
                 new StroopTriangle(this, Color.Green, _triangleTexture),
                 new StroopSquare(this, Color.Blue, _whitePixelTexture),
+                //lots more shapes
+
+                new StroopCircle(this, Color.Yellow, _circleTexture),
+                new StroopTriangle(this, Color.Purple, _triangleTexture),
+                new StroopSquare(this, Color.Orange, _whitePixelTexture)
             };
 
 

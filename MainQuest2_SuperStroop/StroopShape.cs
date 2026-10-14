@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using MGGameLibrary.Shapes;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -13,7 +14,7 @@ using Random = System.Random;
 
 namespace MainQuest2_SuperStroop
 {
-    public abstract class StroopShape : GameComponent
+    public class StroopShape : GameComponent
     {
         protected Color _colour;
 
@@ -28,15 +29,18 @@ namespace MainQuest2_SuperStroop
         static private Random random = new Random();
         private int size;
 
+        private Shape shape;
         public StroopShape(Game game, Color colour, Texture2D texture) : base(game)
         {
             _colour = colour;
-            //_rectangle = rectangle;
+            
             _texture = texture;
-            //_startPosition = new Vector2(rectangle.X, rectangle.Y);
-            //_endPosition = new Vector2(rectangle.X + Game.GraphicsDevice.Viewport.Width - 2 * rectangle.X, rectangle.Y);
-            //_elapsedTime = 0f;
-            //_movementDuration = 5f;
+            
+
+
+
+
+
             size = random.Next(50, 100);
             _startPosition = new Vector2(random.Next(size, game.GraphicsDevice.Viewport.Width - size), random.Next(size, game.GraphicsDevice.Viewport.Height - size));
             _endPosition = new Vector2(random.Next(size, game.GraphicsDevice.Viewport.Width - size), random.Next(size, game.GraphicsDevice.Viewport.Height - size));
