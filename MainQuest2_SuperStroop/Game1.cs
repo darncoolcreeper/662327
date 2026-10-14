@@ -47,8 +47,11 @@ namespace MainQuest2_SuperStroop
 
         private StroopShape requestedShape;
         private int points = 0;
+        private int pointsBeforeGameOver = 0;
 
-        private float timeRemaining = 3f;
+        private float levelTime = 10f;
+        private float timeRemaining = 10f;
+        private int streak = 0;
         public Game1() 
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -146,6 +149,11 @@ namespace MainQuest2_SuperStroop
             //    }
             //}
 
+            //cant go below 1
+
+            levelTime = Math.Max(1f, 10f - (points / 1000f));
+
+
             timeRemaining -= (float)gameTime.ElapsedGameTime.TotalSeconds;
             mouseState = Mouse.GetState();
 
@@ -155,8 +163,9 @@ namespace MainQuest2_SuperStroop
                 //if mouse is over the requested shape, update the requested shape and color
                 if(requestedShape.IsInside(mouseState.Position))
                 {
-                    timeRemaining = 3f;
-                    points += 100;
+                    streak++;
+                    timeRemaining = levelTime;
+                    points += 10 * streak;
                     requestedShape = _shapeRequester.RequestShape();
                     requestColor = _shapeRequester.RequestColor();
                     requestText = requestedShape.ToString();
@@ -164,7 +173,8 @@ namespace MainQuest2_SuperStroop
                 //if mouse is on a different shape, update the requested shape and color
                 else if(shapes.Any(s => s.IsInside(mouseState.Position)))
                 {
-                    timeRemaining = 3f;
+                    timeRemaining = levelTime;
+                    streak = 0;
                     lives--;
                     requestedShape = _shapeRequester.RequestShape();
                     requestColor = _shapeRequester.RequestColor();
@@ -174,13 +184,18 @@ namespace MainQuest2_SuperStroop
             }
             if(timeRemaining <= 0)
             {
-                timeRemaining = 3f;
+                timeRemaining = levelTime;
+                streak = 0;
                 lives--;
                 requestedShape = _shapeRequester.RequestShape();
                 requestColor = _shapeRequester.RequestColor();
                 requestText = requestedShape.ToString();
             }
             prevMouseState = mouseState;
+            if(lives == 0 && pointsBeforeGameOver == 0)
+            {
+                pointsBeforeGameOver = points;
+            }
 
             base.Update(gameTime);
         }
@@ -217,6 +232,12 @@ namespace MainQuest2_SuperStroop
 
             _spriteBatch.DrawString(_displayFont, $"Points: {points}", new Vector2(_graphics.GraphicsDevice.Viewport.Width - _displayFont.MeasureString($"Points: {points}").X - 7, 7), Color.Black);
             _spriteBatch.DrawString(_displayFont, $"Points: {points}", new Vector2(_graphics.GraphicsDevice.Viewport.Width - _displayFont.MeasureString($"Points: {points}").X - 5, 5), Color.White);
+
+            if(lives <= 0)
+            {
+                _spriteBatch.DrawString(_displayFont, $"Game Over! Final Score: {pointsBeforeGameOver}", new Vector2(_graphics.GraphicsDevice.Viewport.Width / 2 - _displayFont.MeasureString($"Game Over! Final Score: {pointsBeforeGameOver}").X / 2 + 2, _graphics.GraphicsDevice.Viewport.Height - _displayFont.MeasureString($"Game Over! Final Score: {pointsBeforeGameOver}").Y / 2 + 2 - 15), Color.Black);
+                _spriteBatch.DrawString(_displayFont, $"Game Over! Final Score: {pointsBeforeGameOver}", new Vector2(_graphics.GraphicsDevice.Viewport.Width / 2 - _displayFont.MeasureString($"Game Over! Final Score: {pointsBeforeGameOver}").X / 2, _graphics.GraphicsDevice.Viewport.Height - _displayFont.MeasureString($"Game Over! Final Score: {pointsBeforeGameOver}").Y / 2 - 15), Color.Red);
+            }
 
             _spriteBatch.End();
 
