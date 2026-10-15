@@ -9,7 +9,7 @@ namespace MGGameLibrary.Shapes
 {
     public abstract class Shape
     {
-        protected Vector2 Position { get; set; }
+        public Vector2 Position { get; set; }
 
         public Shape(Vector2 position)
         {

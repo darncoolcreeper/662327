@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MGGameLibrary.Shapes
 {
-    internal class Square : Shape
+    public class Square : Shape
     {
         protected float size;
 
@@ -19,6 +19,7 @@ namespace MGGameLibrary.Shapes
 
         public override bool IsInside(Point point)
         {
+            
             return point.X >= Position.X && point.X <= Position.X + size &&
                    point.Y >= Position.Y && point.Y <= Position.Y + size;
         }

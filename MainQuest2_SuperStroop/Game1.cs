@@ -97,14 +97,14 @@ namespace MainQuest2_SuperStroop
             //    new StroopSquare(this, new Rectangle(130, 170, 60, 60), Color.Blue, _whitePixelTexture),
             //};
             shapes = new StroopShape[] {
-                new StroopCircle(this, Color.Red, _circleTexture),
-                new StroopTriangle(this, Color.Green, _triangleTexture),
-                new StroopSquare(this, Color.Blue, _whitePixelTexture),
+                new StroopShape(this, Color.Red, _circleTexture),
+                new StroopShape(this, Color.Green, _triangleTexture),
+                new StroopShape(this, Color.Blue, _whitePixelTexture),
                 //lots more shapes
 
-                new StroopCircle(this, Color.Yellow, _circleTexture),
-                new StroopTriangle(this, Color.Purple, _triangleTexture),
-                new StroopSquare(this, Color.Orange, _whitePixelTexture)
+                new StroopShape(this, Color.Yellow, _circleTexture),
+                new StroopShape(this, Color.Purple, _triangleTexture),
+                new StroopShape(this, Color.Orange, _whitePixelTexture)
             };
 
 

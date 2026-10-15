@@ -36,7 +36,7 @@ namespace MainQuest2_SuperStroop
             
             _texture = texture;
             
-
+            
 
 
 
@@ -47,6 +47,20 @@ namespace MainQuest2_SuperStroop
             _rectangle = new Rectangle((int)_startPosition.X, (int)_startPosition.Y, size, size);
             _elapsedTime = 0f;
             _movementDuration = (float)(2f + 3 * random.NextDouble());
+
+            //if texture name contains circle, shape is a circle
+            if (texture.ToString().Contains("circle"))
+            {
+                shape = new Circle(_startPosition, size);
+            }
+            else if(texture.ToString().Contains("triangle"))
+            {
+                shape = new Triangle(_startPosition, size);
+            }
+            else
+            {
+                shape = new Square(_startPosition, size);
+            }
         }
 
 
@@ -57,29 +71,38 @@ namespace MainQuest2_SuperStroop
 
         public virtual bool IsInside(Point point)
         {
-            return _rectangle.Contains(point);
+            //return _rectangle.Contains(point);
+            return shape.IsInside(point);
         }
 
         public override string ToString()
         {
+            if(shape is Square)
+            {
+                return $"{_colour.ToColorName()} square";
+            }
             return $"{_colour.ToColorName()} {_texture}";
         }
         public override void Update(GameTime gameTime)
         {
             _elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            float t = MathHelper.Clamp(_elapsedTime / _movementDuration, 0f, 1f);
-            t = MathHelper.SmoothStep(0, 1, t);
+            //float t = MathHelper.Clamp(_elapsedTime / _movementDuration, 0f, 1f);
+            //t = MathHelper.SmoothStep(0, 1, t);
 
-            Vector2 newPosition = (1 - t) * _startPosition + t * _endPosition;
-            _rectangle.X = (int)newPosition.X;
-            _rectangle.Y = (int)newPosition.Y;
+            //Vector2 newPosition = (1 - t) * _startPosition + t * _endPosition;
+            //_rectangle.X = (int)newPosition.X;
+            //_rectangle.Y = (int)newPosition.Y;
 
-            if (t >= 1f)
-            {
-                (_startPosition, _endPosition) = (_endPosition, _startPosition);
-                _elapsedTime = 0f;
-            }
+
+            //if (t >= 1f)
+            //{
+            //    (_startPosition, _endPosition) = (_endPosition, _startPosition);
+            //    _elapsedTime = 0f;
+            //}
+            //make shape position same as rectangle position
+            
+
 
             base.Update(gameTime);
         }

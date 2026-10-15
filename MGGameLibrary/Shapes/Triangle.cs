@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MGGameLibrary.Shapes
 {
-    internal class Triangle : Shape
+    public class Triangle : Shape
     {
         protected float size;
 
@@ -32,5 +32,6 @@ namespace MGGameLibrary.Shapes
 
             return alpha >= 0 && beta >= 0 && gamma >= 0;
         }
+
     }
 }
