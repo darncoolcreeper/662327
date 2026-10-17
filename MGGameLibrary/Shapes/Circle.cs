@@ -18,16 +18,28 @@ namespace MGGameLibrary.Shapes
             this.radius = radius;
         }
 
+        //public override bool IsInside(Point point)
+        //{
+        //    float distance = Vector2.Distance(Position, new Vector2(point.X, point.Y));
+        //    return distance <= radius;
+
+            
+
+
+
+            
+        //}
         public override bool IsInside(Point point)
         {
-            float distance = Vector2.Distance(Position, new Vector2(point.X, point.Y));
-            return distance <= radius;
+            Vector2 center = new Vector2(
+                Position.X + radius / 2f,
+                Position.Y + radius / 2f);
 
-            
+            float distance = Vector2.Distance(
+                center,
+                new Vector2(point.X, point.Y));
 
-
-
-            
+            return distance <= radius / 2f;
         }
     }
 }

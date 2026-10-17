@@ -21,9 +21,12 @@ namespace MGGameLibrary.Shapes
         {
             //calculate if is inside the triangle using barycentric coordinates
             Vector2 p = new Vector2(point.X, point.Y);
-            Vector2 a = new Vector2(Position.X, Position.Y);
-            Vector2 b = new Vector2(Position.X - size / 2, Position.Y + size);
-            Vector2 c = new Vector2(Position.X + size / 2, Position.Y + size);
+            //Vector2 a = new Vector2(Position.X, Position.Y);
+            //Vector2 b = new Vector2(Position.X - size / 2, Position.Y + size);
+            //Vector2 c = new Vector2(Position.X + size / 2, Position.Y + size);
+            Vector2 a = new Vector2(Position.X + size / 2, Position.Y);
+            Vector2 b = new Vector2(Position.X, Position.Y + size);
+            Vector2 c = new Vector2(Position.X + size, Position.Y + size);
 
             float denominator = ((b.Y - c.Y) * (a.X - c.X) + (c.X - b.X) * (a.Y - c.Y));
             float alpha = ((b.Y - c.Y) * (p.X - c.X) + (c.X - b.X) * (p.Y - c.Y)) / denominator;

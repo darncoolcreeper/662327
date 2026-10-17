@@ -87,21 +87,22 @@ namespace MainQuest2_SuperStroop
         {
             _elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            //float t = MathHelper.Clamp(_elapsedTime / _movementDuration, 0f, 1f);
-            //t = MathHelper.SmoothStep(0, 1, t);
+            float t = MathHelper.Clamp(_elapsedTime / _movementDuration, 0f, 1f);
+            t = MathHelper.SmoothStep(0, 1, t);
 
-            //Vector2 newPosition = (1 - t) * _startPosition + t * _endPosition;
-            //_rectangle.X = (int)newPosition.X;
-            //_rectangle.Y = (int)newPosition.Y;
+            Vector2 newPosition = (1 - t) * _startPosition + t * _endPosition;
+            _rectangle.X = (int)newPosition.X;
+            _rectangle.Y = (int)newPosition.Y;
 
 
-            //if (t >= 1f)
-            //{
-            //    (_startPosition, _endPosition) = (_endPosition, _startPosition);
-            //    _elapsedTime = 0f;
-            //}
-            //make shape position same as rectangle position
-            
+            if (t >= 1f)
+            {
+                (_startPosition, _endPosition) = (_endPosition, _startPosition);
+                _elapsedTime = 0f;
+            }
+            shape.Position = newPosition;
+
+
 
 
             base.Update(gameTime);
