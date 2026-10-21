@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace MainQuest3_AztecDeflect
 {
-    internal class PlayerShip : GameComponent
+    public class PlayerShip : GameComponent
     {
-        private Rectangle _rectangle;
+        public Rectangle _rectangle;
         public PlayerShip(Game game) : base(game)
         {
             _rectangle = new Rectangle(10, Game.GraphicsDevice.Viewport.Height - 10 - 75, 75, 75);
