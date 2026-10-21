@@ -36,5 +36,12 @@ namespace MainQuest3_AztecDeflect
 
             base.Update(gameTime);
         }
+
+        public EnergyOrb FireEnergyOrb()
+        {
+            EnergyOrb orb = new EnergyOrb(new Vector2(_rectangle.Center.X, _rectangle.Center.Y - _rectangle.Height / 2), new Vector2(0, -200), Game);
+            return orb;
+        }
     }
+    
 }
