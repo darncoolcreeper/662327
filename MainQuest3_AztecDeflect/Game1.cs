@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 
 namespace MainQuest3_AztecDeflect
 {
@@ -15,6 +16,10 @@ namespace MainQuest3_AztecDeflect
 
         private Rectangle shipRect = new Rectangle(0, 0, 256, 256);
 
+        
+
+        public List<EnergyOrb> _orbsList;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -27,6 +32,8 @@ namespace MainQuest3_AztecDeflect
             // TODO: Add your initialization logic here
             _ship = new PlayerShip(this);
             Components.Add(_ship);
+
+            _orbsList = new List<EnergyOrb>();
 
             base.Initialize();
         }
@@ -44,8 +51,21 @@ namespace MainQuest3_AztecDeflect
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
 
+
+
+
+
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Space))
+            {
+                EnergyOrb orb = _ship.FireEnergyOrb();
+                _orbsList.Add(orb);
+                Components.Add(orb);
+            }
+
+            
+            RemoveOrbs();
             base.Update(gameTime);
         }
 
@@ -57,9 +77,31 @@ namespace MainQuest3_AztecDeflect
 
             _spriteBatch.Begin();
             _spriteBatch.Draw(textures, _ship._rectangle, shipRect, Color.White);
+
+            foreach (EnergyOrb energyOrb in _orbsList)
+            {
+                _spriteBatch.Draw(textures, energyOrb.Rectangle, new Rectangle(512, 0, 256, 256), Color.OrangeRed);
+            }
+
+
             _spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        private void RemoveOrbs()
+        {
+            for (int i = _orbsList.Count - 1; i >= 0; --i)
+            {
+                if (_orbsList[i].Position.X < 0 ||
+                    _orbsList[i].Position.X > GraphicsDevice.Viewport.Width ||
+                    _orbsList[i].Position.Y < 0 ||
+                    _orbsList[i].Position.Y > GraphicsDevice.Viewport.Height)
+                {
+                    Components.Remove(_orbsList[i]);
+                    _orbsList.Remove(_orbsList[i]);
+                }
+            }
         }
     }
 }

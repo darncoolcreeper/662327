@@ -11,6 +11,10 @@ namespace MainQuest3_AztecDeflect
     public class PlayerShip : GameComponent
     {
         public Rectangle _rectangle;
+
+        public Rectangle Rectangle;
+
+        public int shotsPerSecond = 10;
         public PlayerShip(Game game) : base(game)
         {
             _rectangle = new Rectangle(10, Game.GraphicsDevice.Viewport.Height - 10 - 75, 75, 75);
