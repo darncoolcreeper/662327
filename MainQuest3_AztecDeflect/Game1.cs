@@ -59,13 +59,18 @@ namespace MainQuest3_AztecDeflect
 
             if (Keyboard.GetState().IsKeyDown(Keys.Space))
             {
+
                 EnergyOrb orb = _ship.FireEnergyOrb();
-                _orbsList.Add(orb);
-                Components.Add(orb);
+                if( orb != null)
+                {
+                    _orbsList.Add(orb);
+                    Components.Add(orb);
+                }
+                
             }
 
             
-            RemoveOrbs();
+            //RemoveOrbs();
             base.Update(gameTime);
         }
 
@@ -91,17 +96,21 @@ namespace MainQuest3_AztecDeflect
 
         private void RemoveOrbs()
         {
-            for (int i = _orbsList.Count - 1; i >= 0; --i)
+            if(_orbsList.Count > 1)
             {
-                if (_orbsList[i].Position.X < 0 ||
-                    _orbsList[i].Position.X > GraphicsDevice.Viewport.Width ||
-                    _orbsList[i].Position.Y < 0 ||
-                    _orbsList[i].Position.Y > GraphicsDevice.Viewport.Height)
+                for (int i = _orbsList.Count - 1; i >= 0; --i)
                 {
-                    Components.Remove(_orbsList[i]);
-                    _orbsList.Remove(_orbsList[i]);
+                    if (_orbsList[i].Position.X < 0 ||
+                        _orbsList[i].Position.X > GraphicsDevice.Viewport.Width ||
+                        _orbsList[i].Position.Y < 0 ||
+                        _orbsList[i].Position.Y > GraphicsDevice.Viewport.Height)
+                    {
+                        Components.Remove(_orbsList[i]);
+                        _orbsList.Remove(_orbsList[i]);
+                    }
                 }
             }
+            
         }
     }
 }

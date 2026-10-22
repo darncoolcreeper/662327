@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace MainQuest3_AztecDeflect
 {
     public class PlayerShip : GameComponent
@@ -15,6 +16,9 @@ namespace MainQuest3_AztecDeflect
         public Rectangle Rectangle;
 
         public int shotsPerSecond = 10;
+
+        public float fireRateTimer = 0.1f;
+
         public PlayerShip(Game game) : base(game)
         {
             _rectangle = new Rectangle(10, Game.GraphicsDevice.Viewport.Height - 10 - 75, 75, 75);
@@ -29,6 +33,7 @@ namespace MainQuest3_AztecDeflect
 
         public override void Update(GameTime gameTime)
         {
+            fireRateTimer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
             if (Keyboard.GetState().IsKeyDown(Keys.A))
             {
                 MoveSideways(-5);
@@ -43,7 +48,17 @@ namespace MainQuest3_AztecDeflect
 
         public EnergyOrb FireEnergyOrb()
         {
+
+            //only fire up to 10 per second
+            //if(fireRateTimer == 0)
+            //{
+            //    EnergyOrb orb = new EnergyOrb(new Vector2(_rectangle.Center.X, _rectangle.Center.Y - _rectangle.Height / 2), new Vector2(0, -200), Game);
+            //    fireRateTimer = 0.1f;
+            //    return orb;
+            //}
             EnergyOrb orb = new EnergyOrb(new Vector2(_rectangle.Center.X, _rectangle.Center.Y - _rectangle.Height / 2), new Vector2(0, -200), Game);
+            fireRateTimer = 0.1f;
+
             return orb;
         }
     }

@@ -11,8 +11,8 @@ namespace MainQuest3_AztecDeflect
     public class EnergyOrb : GameComponent
     {
         const int ORB_RADIUS = 5;
-        public Vector2 Position;// = new Vector2(100, 100);
-        public Vector2 Velocity;// = new Vector2(00, -200);
+        public Vector2 Position;
+        public Vector2 Velocity;
 
         public Rectangle Rectangle
         {
