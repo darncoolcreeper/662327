@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using MGGameLibrary;
+using MGGameLibrary.Shapes;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
@@ -19,6 +21,7 @@ namespace MainQuest3_AztecDeflect
         
 
         public List<EnergyOrb> _orbsList;
+        public List<ICollidable> _obstaclesList;
 
         public Game1()
         {
@@ -34,6 +37,10 @@ namespace MainQuest3_AztecDeflect
             Components.Add(_ship);
 
             _orbsList = new List<EnergyOrb>();
+            _obstaclesList = new List<ICollidable>();
+
+            _obstaclesList.Add(new Obstacle(
+            new Circle(new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2), 30)));
 
             base.Initialize();
         }
@@ -68,8 +75,17 @@ namespace MainQuest3_AztecDeflect
                 }
                 
             }
+            for (int i = 0; i < _orbsList.Count; ++i)
+            {
+                foreach (Obstacle obstacle in _obstaclesList)
+                {
+                    if (obstacle.CollidesWith(_orbsList[i]))
+                    {
+                        _orbsList[i].Velocity = Vector2.Zero;
+                    }
+                }
+            }
 
-            
             RemoveOrbs();
             base.Update(gameTime);
         }
@@ -87,7 +103,15 @@ namespace MainQuest3_AztecDeflect
             {
                 _spriteBatch.Draw(textures, energyOrb.Rectangle, new Rectangle(512, 0, 256, 256), Color.OrangeRed);
             }
+            foreach (ICollidable obstacle in _obstaclesList)
+            {
+                if (obstacle.Shape is Circle circle)
+                {
+                    Rectangle r = new Rectangle((int)(circle.Centre.X - circle.radius), (int)(circle.Centre.Y - circle.radius), (int)circle.radius * 2, (int)circle.radius * 2);
 
+                    _spriteBatch.Draw(textures, r, new Rectangle(256, 0, 256, 256), Color.White);
+                }
+            }
 
             _spriteBatch.End();
 

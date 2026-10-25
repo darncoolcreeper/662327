@@ -17,6 +17,16 @@ namespace MGGameLibrary.Shapes
             this.size = size;
         }
 
+        public override bool Intersects(Shape other)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool IntersectsCircle(Circle circle)
+        {
+            throw new NotImplementedException();
+        }
+
         public override bool IsInside(Point point)
         {
             //calculate if is inside the triangle using barycentric coordinates

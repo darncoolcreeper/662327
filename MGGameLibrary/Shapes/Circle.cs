@@ -10,25 +10,20 @@ namespace MGGameLibrary.Shapes
 {
     public class Circle : Shape
     {
-        protected float radius;
+        public float radius;
+
+        
+
+        public Vector2 Centre => Position;
 
         public Circle(Vector2 position, float radius) : base(position)
         {
             Position = position;
             this.radius = radius;
         }
-
-        //public override bool IsInside(Point point)
-        //{
-        //    float distance = Vector2.Distance(Position, new Vector2(point.X, point.Y));
-        //    return distance <= radius;
-
-            
+        
 
 
-
-            
-        //}
         public override bool IsInside(Point point)
         {
             Vector2 center = new Vector2(
@@ -41,5 +36,24 @@ namespace MGGameLibrary.Shapes
 
             return distance <= radius / 2f;
         }
+
+
+        public override bool Intersects(Shape other)
+        {
+            return other.IntersectsCircle(this);
+        }
+
+        public override bool IntersectsCircle(Circle circle)
+        {
+            float distance = Vector2.Distance(Centre, circle.Centre);
+            return distance <= radius + circle.radius;
+        }
+
+
+
+
+
+
+
     }
 }

@@ -17,5 +17,14 @@ namespace MGGameLibrary.Shapes
         }
 
         public abstract bool IsInside(Point point);
+
+        public abstract bool Intersects(Shape other);
+        public abstract bool IntersectsCircle(Circle circle);
+
+        static bool Intersects(Circle c1, Circle c2)
+        {
+            float distance = Vector2.Distance(c1.Position, c2.Position);
+            return distance < c1.radius + c2.radius;
+        }
     }
 }

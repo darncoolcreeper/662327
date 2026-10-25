@@ -17,6 +17,44 @@ namespace MGGameLibrary.Shapes
             this.size = size;
         }
 
+
+        public override bool Intersects(Shape other)
+        {
+            
+
+            if (other is Circle circle)
+                return IntersectsCircle(circle);
+
+            if (other is Square square)
+            {
+                return Position.X < square.Position.X + square.size &&
+                       Position.X + size > square.Position.X &&
+                       Position.Y < square.Position.Y + square.size &&
+                       Position.Y + size > square.Position.Y;
+            }
+
+            return false;
+        }
+
+        public override bool IntersectsCircle(Circle circle)
+        {
+            float closestX = MathHelper.Clamp(
+            circle.Centre.X,
+            Position.X,
+            Position.X + size);
+
+            float closestY = MathHelper.Clamp(
+                circle.Centre.Y,
+                Position.Y,
+                Position.Y + size);
+
+            float distanceX = circle.Centre.X - closestX;
+            float distanceY = circle.Centre.Y - closestY;
+
+            return distanceX * distanceX + distanceY * distanceY
+                   <= circle.radius * circle.radius;
+        }
+
         public override bool IsInside(Point point)
         {
             
