@@ -41,6 +41,20 @@ namespace MainQuest3_AztecDeflect
 
             _obstaclesList.Add(new Obstacle(
             new Circle(new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2), 30)));
+            //more obstacles
+
+
+            _obstaclesList.Add(new Obstacle(
+            new Circle(new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 4), 30)));
+
+            _obstaclesList.Add(new Obstacle(
+            new Circle(new Vector2(GraphicsDevice.Viewport.Width / 4, GraphicsDevice.Viewport.Height / 3), 40)));
+
+            _obstaclesList.Add(new Obstacle(
+            new Circle(new Vector2(GraphicsDevice.Viewport.Width * (0.75f), GraphicsDevice.Viewport.Height / 3), 40)));
+
+
+
 
             base.Initialize();
         }
@@ -93,6 +107,7 @@ namespace MainQuest3_AztecDeflect
                 {
                     if (obstacle.CollidesWith(_orbsList[i], ref collisionNormal))
                     {
+                        _orbsList[i].RevertToPreviousPosition();
                         _orbsList[i].Velocity = Vector2.Reflect(_orbsList[i].Velocity, collisionNormal);
                     }
                 }

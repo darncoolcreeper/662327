@@ -15,6 +15,7 @@ namespace MainQuest3_AztecDeflect
         const int ORB_RADIUS = 5;
         public Vector2 Position;
         public Vector2 Velocity;
+        public Vector2 _previousPosition;
 
         public Rectangle Rectangle
         {
@@ -39,7 +40,7 @@ namespace MainQuest3_AztecDeflect
 
         public override void Update(GameTime gameTime)
         {
-            
+            _previousPosition = Position;
             Position = Position + (float)gameTime.ElapsedGameTime.TotalSeconds * Velocity; // Euler Integration
             base.Update(gameTime);
 
@@ -50,5 +51,9 @@ namespace MainQuest3_AztecDeflect
             return Shape.Intersects(other.Shape, ref collisionNormal);
         }
 
+        public void RevertToPreviousPosition()
+        {
+            Position = _previousPosition;
+        }
     }
 }
