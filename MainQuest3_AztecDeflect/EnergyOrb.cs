@@ -45,7 +45,10 @@ namespace MainQuest3_AztecDeflect
 
 
         }
-
+        public bool CollidesWith(ICollidable other, ref Vector2 collisionNormal)
+        {
+            return Shape.Intersects(other.Shape, ref collisionNormal);
+        }
 
     }
 }

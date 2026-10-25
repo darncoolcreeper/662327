@@ -1,4 +1,5 @@
 ﻿using MGGameLibrary.Shapes;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +25,10 @@ namespace MGGameLibrary
         public bool CollidesWith(ICollidable other)
         {
             return _shape.Intersects(other.Shape);
+        }
+        public bool CollidesWith(ICollidable other, ref Vector2 collisionNormal)
+        {
+            return Shape.Intersects(other.Shape, ref collisionNormal);
         }
     }
 }

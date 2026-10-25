@@ -49,6 +49,24 @@ namespace MGGameLibrary.Shapes
             return distance <= radius + circle.radius;
         }
 
+        public override bool Intersects(Shape other, ref Vector2 collisionNormal)
+        {
+            return other.IntersectsCircle(this, ref collisionNormal);
+        }
+
+        public override bool IntersectsCircle(Circle other, ref Vector2 collisionNormal)
+        {
+            //return Intersects(this, other, ref collisionNormal);
+            bool collision = Vector2.Distance(Centre,other.Centre) <= radius + other.radius;
+
+            
+            if (collision)
+            {
+                collisionNormal = Vector2.Normalize(Centre - other.Centre);
+            }
+
+            return collision;
+        }
 
 
 

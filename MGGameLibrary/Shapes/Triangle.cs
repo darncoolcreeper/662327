@@ -22,7 +22,17 @@ namespace MGGameLibrary.Shapes
             throw new NotImplementedException();
         }
 
+        public override bool Intersects(Shape other, ref Vector2 collisionNormal)
+        {
+            throw new NotImplementedException();
+        }
+
         public override bool IntersectsCircle(Circle circle)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool IntersectsCircle(Circle other, ref Vector2 collisionNormal)
         {
             throw new NotImplementedException();
         }

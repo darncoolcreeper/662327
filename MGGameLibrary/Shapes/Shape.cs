@@ -21,10 +21,13 @@ namespace MGGameLibrary.Shapes
         public abstract bool Intersects(Shape other);
         public abstract bool IntersectsCircle(Circle circle);
 
-        static bool Intersects(Circle c1, Circle c2)
+        public static bool Intersects(Circle c1, Circle c2)
         {
             float distance = Vector2.Distance(c1.Position, c2.Position);
             return distance < c1.radius + c2.radius;
         }
+
+        public abstract bool Intersects(Shape other, ref Vector2 collisionNormal);
+        public abstract bool IntersectsCircle(Circle other, ref Vector2 collisionNormal);
     }
 }

@@ -36,6 +36,11 @@ namespace MGGameLibrary.Shapes
             return false;
         }
 
+        public override bool Intersects(Shape other, ref Vector2 collisionNormal)
+        {
+            throw new NotImplementedException();
+        }
+
         public override bool IntersectsCircle(Circle circle)
         {
             float closestX = MathHelper.Clamp(
@@ -53,6 +58,11 @@ namespace MGGameLibrary.Shapes
 
             return distanceX * distanceX + distanceY * distanceY
                    <= circle.radius * circle.radius;
+        }
+
+        public override bool IntersectsCircle(Circle other, ref Vector2 collisionNormal)
+        {
+            throw new NotImplementedException();
         }
 
         public override bool IsInside(Point point)
