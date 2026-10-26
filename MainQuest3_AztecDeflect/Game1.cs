@@ -56,7 +56,8 @@ namespace MainQuest3_AztecDeflect
 
             _sceneManager = new SceneManager();
 
-            _sceneManager.ChangeScene(new TitleScene(this));
+
+            _sceneManager.ChangeScene(new FlashScene(this, 3.0f));
 
 
             base.Initialize();
@@ -75,6 +76,13 @@ namespace MainQuest3_AztecDeflect
 
             switch(_sceneManager.CurrentScene)
             {
+                case FlashScene flashScene:
+                    flashScene.Update(gameTime);
+                    if(flashScene.Finished)
+                    {
+                        _sceneManager.ChangeScene(new TitleScene(this));
+                    }
+                    break;
                 case TitleScene titleScene:
                     if (Keyboard.GetState().IsKeyDown(Keys.Space))
                     {
@@ -152,6 +160,9 @@ namespace MainQuest3_AztecDeflect
             
             switch(_sceneManager.CurrentScene)
             {
+                case FlashScene flashScene:
+                    flashScene.Draw(gameTime, _spriteBatch);
+                    break;
                 case TitleScene titleScene:
                     titleScene.Draw(gameTime, _spriteBatch);
                     break;
