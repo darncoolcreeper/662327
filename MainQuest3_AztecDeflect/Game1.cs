@@ -1,4 +1,5 @@
 ﻿using MGGameLibrary;
+using MGGameLibrary.Scenes;
 using MGGameLibrary.Shapes;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -18,7 +19,7 @@ namespace MainQuest3_AztecDeflect
 
         private Rectangle shipRect = new Rectangle(0, 0, 256, 256);
 
-        
+        public SceneManager _sceneManager;
 
         public List<EnergyOrb> _orbsList;
         public List<ICollidable> _obstaclesList;
@@ -53,7 +54,9 @@ namespace MainQuest3_AztecDeflect
             _obstaclesList.Add(new Obstacle(
             new Circle(new Vector2(GraphicsDevice.Viewport.Width * (0.75f), GraphicsDevice.Viewport.Height / 3), 40)));
 
+            _sceneManager = new SceneManager();
 
+            _sceneManager.ChangeScene(new TitleScene(this));
 
 
             base.Initialize();
@@ -69,80 +72,121 @@ namespace MainQuest3_AztecDeflect
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
 
-
-
-
-
-
-
-            if (Keyboard.GetState().IsKeyDown(Keys.Space))
+            switch(_sceneManager.CurrentScene)
             {
-
-                EnergyOrb orb = _ship.FireEnergyOrb();
-                if( orb != null)
-                {
-                    _orbsList.Add(orb);
-                    Components.Add(orb);
-                }
-                
-            }
-            //for (int i = 0; i < _orbsList.Count; ++i)
-            //{
-            //    foreach (Obstacle obstacle in _obstaclesList)
-            //    {
-            //        if (obstacle.CollidesWith(_orbsList[i]))
-            //        {
-            //            _orbsList[i].Velocity = Vector2.Zero;
-            //        }
-            //    }
-            //}
-
-            Vector2 collisionNormal = Vector2.Zero;
-            for (int i = 0; i < _orbsList.Count; ++i)
-            {
-                foreach (Obstacle obstacle in _obstaclesList)
-                {
-                    if (obstacle.CollidesWith(_orbsList[i], ref collisionNormal))
+                case TitleScene titleScene:
+                    if (Keyboard.GetState().IsKeyDown(Keys.Space))
                     {
-                        _orbsList[i].RevertToPreviousPosition();
-                        _orbsList[i].Velocity = Vector2.Reflect(_orbsList[i].Velocity, collisionNormal);
-                    }
-                }
-            }
+                        //case is default scene, so we can change to the game scene
+                        //destroy title scene and change to game scene
+                        _sceneManager.CurrentScene = null;
 
-            RemoveOrbs();
-            base.Update(gameTime);
+                    }
+                    //if (Keyboard.GetState().IsKeyDown(Keys.C))
+                    //{
+                    //    _screen = Screen.CreditsScreen;
+                    //}
+                    break;
+                default:
+
+                    if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+                        Exit();
+
+
+
+
+
+
+
+                    if (Keyboard.GetState().IsKeyDown(Keys.Space))
+                    {
+
+                        EnergyOrb orb = _ship.FireEnergyOrb();
+                        if (orb != null)
+                        {
+                            _orbsList.Add(orb);
+                            Components.Add(orb);
+                        }
+
+                    }
+                    //for (int i = 0; i < _orbsList.Count; ++i)
+                    //{
+                    //    foreach (Obstacle obstacle in _obstaclesList)
+                    //    {
+                    //        if (obstacle.CollidesWith(_orbsList[i]))
+                    //        {
+                    //            _orbsList[i].Velocity = Vector2.Zero;
+                    //        }
+                    //    }
+                    //}
+
+                    Vector2 collisionNormal = Vector2.Zero;
+                    for (int i = 0; i < _orbsList.Count; ++i)
+                    {
+                        foreach (Obstacle obstacle in _obstaclesList)
+                        {
+                            if (obstacle.CollidesWith(_orbsList[i], ref collisionNormal))
+                            {
+                                _orbsList[i].RevertToPreviousPosition();
+                                _orbsList[i].Velocity = Vector2.Reflect(_orbsList[i].Velocity, collisionNormal);
+                            }
+                        }
+                    }
+                    //_sceneManager.Update(gameTime);
+                    RemoveOrbs();
+                    base.Update(gameTime);
+
+
+
+
+
+
+                    break;
+            }
+            
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            // TODO: Add your drawing code here
-
-            _spriteBatch.Begin();
-            _spriteBatch.Draw(textures, _ship._rectangle, shipRect, Color.White);
-
-            foreach (EnergyOrb energyOrb in _orbsList)
+            
+            switch(_sceneManager.CurrentScene)
             {
-                _spriteBatch.Draw(textures, energyOrb.Rectangle, new Rectangle(512, 0, 256, 256), Color.OrangeRed);
+                case TitleScene titleScene:
+                    titleScene.Draw(gameTime, _spriteBatch);
+                    break;
+                default:
+
+                    GraphicsDevice.Clear(Color.CornflowerBlue);
+
+                    // TODO: Add your drawing code here
+
+                    _spriteBatch.Begin();
+                    _spriteBatch.Draw(textures, _ship._rectangle, shipRect, Color.White);
+
+                    foreach (EnergyOrb energyOrb in _orbsList)
+                    {
+                        _spriteBatch.Draw(textures, energyOrb.Rectangle, new Rectangle(512, 0, 256, 256), Color.OrangeRed);
+                    }
+                    foreach (ICollidable obstacle in _obstaclesList)
+                    {
+                        if (obstacle.Shape is Circle circle)
+                        {
+                            Rectangle r = new Rectangle((int)(circle.Centre.X - circle.radius), (int)(circle.Centre.Y - circle.radius), (int)circle.radius * 2, (int)circle.radius * 2);
+
+                            _spriteBatch.Draw(textures, r, new Rectangle(256, 0, 256, 256), Color.White);
+                        }
+                    }
+
+                    _spriteBatch.End();
+
+                    base.Draw(gameTime);
+
+
+
+                    break;
             }
-            foreach (ICollidable obstacle in _obstaclesList)
-            {
-                if (obstacle.Shape is Circle circle)
-                {
-                    Rectangle r = new Rectangle((int)(circle.Centre.X - circle.radius), (int)(circle.Centre.Y - circle.radius), (int)circle.radius * 2, (int)circle.radius * 2);
-
-                    _spriteBatch.Draw(textures, r, new Rectangle(256, 0, 256, 256), Color.White);
-                }
-            }
-
-            _spriteBatch.End();
-
-            base.Draw(gameTime);
+            
         }
 
         private void RemoveOrbs()
