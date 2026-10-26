@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Linq;
 using MGGameLibrary;
+using MGGameLibrary.Scenes;
 
 
 namespace MainQuest2_SuperStroop
@@ -52,6 +53,8 @@ namespace MainQuest2_SuperStroop
         private float levelTime = 10f;
         private float timeRemaining = 10f;
         private int streak = 0;
+
+        public SceneManager _sceneManager;
         public Game1() 
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -64,7 +67,10 @@ namespace MainQuest2_SuperStroop
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            
+            _sceneManager = new SceneManager();
 
+            _sceneManager.ChangeScene(new FlashScene(this, 3.0f));
             base.Initialize();
         }
 
@@ -136,6 +142,83 @@ namespace MainQuest2_SuperStroop
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            switch (_sceneManager.CurrentScene)
+            {
+                case FlashScene flashScene:
+                    flashScene.Update(gameTime);
+                    if (flashScene.Finished)
+                    {
+                        _sceneManager.ChangeScene(new TitleScene(this));
+                    }
+                    break;
+                case TitleScene titleScene:
+                    if (Keyboard.GetState().IsKeyDown(Keys.Space))
+                    {
+                        //case is default scene, so we can change to the game scene
+                        //destroy title scene and change to game scene
+                        _sceneManager.CurrentScene = null;
+
+                    }
+                    //if (Keyboard.GetState().IsKeyDown(Keys.C))
+                    //{
+                    //    _screen = Screen.CreditsScreen;
+                    //}
+                    break;
+                default:
+
+                    levelTime = Math.Max(1f, 10f - (points / 1000f));
+
+
+                    timeRemaining -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    mouseState = Mouse.GetState();
+
+                    if (mouseState.LeftButton == ButtonState.Pressed &&
+                        prevMouseState.LeftButton == ButtonState.Released)
+                    {
+                        //if mouse is over the requested shape, update the requested shape and color
+                        if (requestedShape.IsInside(mouseState.Position))
+                        {
+                            streak++;
+                            timeRemaining = levelTime;
+                            points += 10 * streak;
+                            requestedShape = _shapeRequester.RequestShape();
+                            requestColor = _shapeRequester.RequestColor();
+                            requestText = requestedShape.ToString();
+                        }
+                        //if mouse is on a different shape, update the requested shape and color
+                        else if (shapes.Any(s => s.IsInside(mouseState.Position)))
+                        {
+                            timeRemaining = levelTime;
+                            streak = 0;
+                            lives--;
+                            requestedShape = _shapeRequester.RequestShape();
+                            requestColor = _shapeRequester.RequestColor();
+                            requestText = requestedShape.ToString();
+                        }
+
+                    }
+                    if (timeRemaining <= 0)
+                    {
+                        timeRemaining = levelTime;
+                        streak = 0;
+                        lives--;
+                        requestedShape = _shapeRequester.RequestShape();
+                        requestColor = _shapeRequester.RequestColor();
+                        requestText = requestedShape.ToString();
+                    }
+                    prevMouseState = mouseState;
+                    if (lives == 0 && pointsBeforeGameOver == 0)
+                    {
+                        pointsBeforeGameOver = points;
+                    }
+
+                    base.Update(gameTime);
+
+
+
+                    break;
+            }
+
             // TODO: Add your update logic here
 
             //_displayText = "Mouse over nothing";
@@ -151,103 +234,72 @@ namespace MainQuest2_SuperStroop
 
             //cant go below 1
 
-            levelTime = Math.Max(1f, 10f - (points / 1000f));
-
-
-            timeRemaining -= (float)gameTime.ElapsedGameTime.TotalSeconds;
-            mouseState = Mouse.GetState();
-
-            if (mouseState.LeftButton == ButtonState.Pressed &&
-                prevMouseState.LeftButton == ButtonState.Released)
-            {
-                //if mouse is over the requested shape, update the requested shape and color
-                if(requestedShape.IsInside(mouseState.Position))
-                {
-                    streak++;
-                    timeRemaining = levelTime;
-                    points += 10 * streak;
-                    requestedShape = _shapeRequester.RequestShape();
-                    requestColor = _shapeRequester.RequestColor();
-                    requestText = requestedShape.ToString();
-                }
-                //if mouse is on a different shape, update the requested shape and color
-                else if(shapes.Any(s => s.IsInside(mouseState.Position)))
-                {
-                    timeRemaining = levelTime;
-                    streak = 0;
-                    lives--;
-                    requestedShape = _shapeRequester.RequestShape();
-                    requestColor = _shapeRequester.RequestColor();
-                    requestText = requestedShape.ToString();
-                }
-
-            }
-            if(timeRemaining <= 0)
-            {
-                timeRemaining = levelTime;
-                streak = 0;
-                lives--;
-                requestedShape = _shapeRequester.RequestShape();
-                requestColor = _shapeRequester.RequestColor();
-                requestText = requestedShape.ToString();
-            }
-            prevMouseState = mouseState;
-            if(lives == 0 && pointsBeforeGameOver == 0)
-            {
-                pointsBeforeGameOver = points;
-            }
-
-            base.Update(gameTime);
+            
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            _spriteBatch.Begin();
-
-            string stringTimeRemaining = timeRemaining.ToString("0.0");
-
-
-            //_spriteBatch.Draw(_circleTexture, _circle, Color.Red);
-            //_spriteBatch.Draw(_triangleTexture, _triangle, Color.Yellow);
-            //_spriteBatch.Draw(_whitePixelTexture, _rectangle, Color.Blue);
-            //_spriteBatch.Draw(_whitePixelTexture, _square, Color.Green);
-
-            for (int i = 0; i < shapes.Length; i++)
+            switch (_sceneManager.CurrentScene)
             {
-                shapes[i].Draw(_spriteBatch);
+                case FlashScene flashScene:
+                    flashScene.Draw(gameTime, _spriteBatch);
+                    break;
+                case TitleScene titleScene:
+                    titleScene.Draw(gameTime, _spriteBatch);
+                    break;
+                default:
+
+                    GraphicsDevice.Clear(Color.CornflowerBlue);
+
+                    _spriteBatch.Begin();
+
+                    string stringTimeRemaining = timeRemaining.ToString("0.0");
+
+
+                    //_spriteBatch.Draw(_circleTexture, _circle, Color.Red);
+                    //_spriteBatch.Draw(_triangleTexture, _triangle, Color.Yellow);
+                    //_spriteBatch.Draw(_whitePixelTexture, _rectangle, Color.Blue);
+                    //_spriteBatch.Draw(_whitePixelTexture, _square, Color.Green);
+
+                    for (int i = 0; i < shapes.Length; i++)
+                    {
+                        shapes[i].Draw(_spriteBatch);
+                    }
+                    Vector2 textPosition = new Vector2(_graphics.GraphicsDevice.Viewport.Width / 2 - _displayFont.MeasureString($"{requestText} {stringTimeRemaining}").X / 2, 5);
+
+                    //_spriteBatch.DrawString(_displayFont, _displayText, new Vector2(textPosition.X +2, textPosition.Y + 2), Color.Black);
+
+                    //_spriteBatch.DrawString(_displayFont, _displayText, new Vector2(textPosition.X, textPosition.Y), _displayColour);
+                    _spriteBatch.DrawString(_displayFont, $"{requestText} {stringTimeRemaining}", new Vector2(textPosition.X + 2, textPosition.Y + 2), Color.Black);
+
+                    _spriteBatch.DrawString(_displayFont, $"{requestText} {stringTimeRemaining}", new Vector2(textPosition.X, textPosition.Y), requestColor);
+
+                    _spriteBatch.DrawString(_displayFont, $"Lives: {lives}", new Vector2(7, 7), Color.Black);
+                    _spriteBatch.DrawString(_displayFont, $"Lives: {lives}", new Vector2(5, 5), Color.White);
+
+                    _spriteBatch.DrawString(_displayFont, $"Points: {points}", new Vector2(_graphics.GraphicsDevice.Viewport.Width - _displayFont.MeasureString($"Points: {points}").X - 7, 7), Color.Black);
+                    _spriteBatch.DrawString(_displayFont, $"Points: {points}", new Vector2(_graphics.GraphicsDevice.Viewport.Width - _displayFont.MeasureString($"Points: {points}").X - 5, 5), Color.White);
+
+
+                    _spriteBatch.DrawString(_displayFont, $"Streak: {streak}", new Vector2(_graphics.GraphicsDevice.Viewport.Width - _displayFont.MeasureString($"Streak: {streak}").X - 7, 7 + 30), Color.Black);
+                    _spriteBatch.DrawString(_displayFont, $"Streak: {streak}", new Vector2(_graphics.GraphicsDevice.Viewport.Width - _displayFont.MeasureString($"Streak: {streak}").X - 5, 5 + 30), Color.White);
+
+                    if (lives <= 0)
+                    {
+                        _spriteBatch.DrawString(_displayFont, $"Game Over! Final Score: {pointsBeforeGameOver}", new Vector2(_graphics.GraphicsDevice.Viewport.Width / 2 - _displayFont.MeasureString($"Game Over! Final Score: {pointsBeforeGameOver}").X / 2 + 2, _graphics.GraphicsDevice.Viewport.Height - _displayFont.MeasureString($"Game Over! Final Score: {pointsBeforeGameOver}").Y / 2 + 2 - 15), Color.Black);
+                        _spriteBatch.DrawString(_displayFont, $"Game Over! Final Score: {pointsBeforeGameOver}", new Vector2(_graphics.GraphicsDevice.Viewport.Width / 2 - _displayFont.MeasureString($"Game Over! Final Score: {pointsBeforeGameOver}").X / 2, _graphics.GraphicsDevice.Viewport.Height - _displayFont.MeasureString($"Game Over! Final Score: {pointsBeforeGameOver}").Y / 2 - 15), Color.Red);
+                    }
+
+                    _spriteBatch.End();
+
+                    // TODO: Add your drawing code here
+
+                    base.Draw(gameTime);
+
+
+                    break;
             }
-            Vector2 textPosition = new Vector2(_graphics.GraphicsDevice.Viewport.Width / 2 - _displayFont.MeasureString($"{requestText} {stringTimeRemaining}").X / 2, 5);
-
-            //_spriteBatch.DrawString(_displayFont, _displayText, new Vector2(textPosition.X +2, textPosition.Y + 2), Color.Black);
-
-            //_spriteBatch.DrawString(_displayFont, _displayText, new Vector2(textPosition.X, textPosition.Y), _displayColour);
-            _spriteBatch.DrawString(_displayFont, $"{requestText} {stringTimeRemaining}", new Vector2(textPosition.X + 2, textPosition.Y + 2), Color.Black);
-
-            _spriteBatch.DrawString(_displayFont, $"{requestText} {stringTimeRemaining}", new Vector2(textPosition.X, textPosition.Y), requestColor);
-
-            _spriteBatch.DrawString(_displayFont, $"Lives: {lives}", new Vector2(7, 7), Color.Black);
-            _spriteBatch.DrawString(_displayFont, $"Lives: {lives}", new Vector2(5, 5), Color.White);
-
-            _spriteBatch.DrawString(_displayFont, $"Points: {points}", new Vector2(_graphics.GraphicsDevice.Viewport.Width - _displayFont.MeasureString($"Points: {points}").X - 7, 7), Color.Black);
-            _spriteBatch.DrawString(_displayFont, $"Points: {points}", new Vector2(_graphics.GraphicsDevice.Viewport.Width - _displayFont.MeasureString($"Points: {points}").X - 5, 5), Color.White);
-
-
-            _spriteBatch.DrawString(_displayFont, $"Streak: {streak}", new Vector2(_graphics.GraphicsDevice.Viewport.Width - _displayFont.MeasureString($"Streak: {streak}").X - 7, 7 + 30), Color.Black);
-            _spriteBatch.DrawString(_displayFont, $"Streak: {streak}", new Vector2(_graphics.GraphicsDevice.Viewport.Width - _displayFont.MeasureString($"Streak: {streak}").X - 5, 5 + 30), Color.White);
-
-            if (lives <= 0)
-            {
-                _spriteBatch.DrawString(_displayFont, $"Game Over! Final Score: {pointsBeforeGameOver}", new Vector2(_graphics.GraphicsDevice.Viewport.Width / 2 - _displayFont.MeasureString($"Game Over! Final Score: {pointsBeforeGameOver}").X / 2 + 2, _graphics.GraphicsDevice.Viewport.Height - _displayFont.MeasureString($"Game Over! Final Score: {pointsBeforeGameOver}").Y / 2 + 2 - 15), Color.Black);
-                _spriteBatch.DrawString(_displayFont, $"Game Over! Final Score: {pointsBeforeGameOver}", new Vector2(_graphics.GraphicsDevice.Viewport.Width / 2 - _displayFont.MeasureString($"Game Over! Final Score: {pointsBeforeGameOver}").X / 2, _graphics.GraphicsDevice.Viewport.Height - _displayFont.MeasureString($"Game Over! Final Score: {pointsBeforeGameOver}").Y / 2 - 15), Color.Red);
-            }
-
-            _spriteBatch.End();
-
-            // TODO: Add your drawing code here
-
-            base.Draw(gameTime);
+            
         }
     }
 }
