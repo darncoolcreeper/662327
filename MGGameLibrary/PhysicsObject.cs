@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MGGameLibrary
 {
-    internal class PhysicsObject : GameComponent
+    public class PhysicsObject : GameComponent
     {
         public float _mass;
         public Vector2 _position;
@@ -35,7 +35,15 @@ namespace MGGameLibrary
 
         public virtual void Update(float deltaTime)
         {
-            
+            _previousPosition = _position;
+            // a = F/m
+            Vector2 acceleration = _force / _mass;
+            // v = v0 + at
+            _velocity += acceleration * deltaTime;
+            // s = s0 + vt
+            _position += _velocity * deltaTime;
+            // Reset force for next frame
+            _force = Vector2.Zero;
         }
 
         public void RevertToPreviousPosition()
