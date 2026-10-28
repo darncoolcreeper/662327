@@ -24,7 +24,7 @@ namespace MGGameLibrary
 
         public bool CollidesWith(ICollidable other)
         {
-            return _shape.Intersects(other.Shape);
+            return Shape.Intersects(other.Shape);
         }
         public bool CollidesWith(ICollidable other, ref Vector2 collisionNormal)
         {

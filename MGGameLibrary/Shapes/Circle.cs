@@ -26,13 +26,9 @@ namespace MGGameLibrary.Shapes
 
         public override bool IsInside(Point point)
         {
-            Vector2 center = new Vector2(
-                Position.X + radius / 2f,
-                Position.Y + radius / 2f);
+            Vector2 center = new Vector2(Position.X + radius / 2f, Position.Y + radius / 2f);
 
-            float distance = Vector2.Distance(
-                center,
-                new Vector2(point.X, point.Y));
+            float distance = Vector2.Distance(center, new Vector2(point.X, point.Y));
 
             return distance <= radius / 2f;
         }
@@ -57,7 +53,7 @@ namespace MGGameLibrary.Shapes
         public override bool IntersectsCircle(Circle other, ref Vector2 collisionNormal)
         {
             //return Intersects(this, other, ref collisionNormal);
-            bool collision = Vector2.Distance(Centre,other.Centre) <= radius + other.radius;
+            bool collision = Vector2.Distance(Centre, other.Centre) <= radius + other.radius;
 
             
             if (collision)
