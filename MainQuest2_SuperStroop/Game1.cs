@@ -148,7 +148,7 @@ namespace MainQuest2_SuperStroop
                     flashScene.Update(gameTime);
                     if (flashScene.Finished)
                     {
-                        _sceneManager.ChangeScene(new TitleScene(this));
+                        _sceneManager.ChangeScene(new TitleScene("Shape clicker", this));
                     }
                     break;
                 case TitleScene titleScene:

@@ -80,7 +80,7 @@ namespace MainQuest3_AztecDeflect
                     flashScene.Update(gameTime);
                     if(flashScene.Finished)
                     {
-                        _sceneManager.ChangeScene(new TitleScene(this));
+                        _sceneManager.ChangeScene(new TitleScene("Aztec Deflect", this));
                     }
                     break;
                 case TitleScene titleScene:

@@ -216,7 +216,7 @@ namespace MainQuest1_ClosestToTen
                 case Screen.TitleScreen:
                     GraphicsDevice.Clear(Color.Gainsboro);
                     _spriteBatch.Begin();
-                    string titleText = "Title Screen\nPress Space to Play\nPress C to see the Credits";
+                    string titleText = "Closest to Ten\nPress Space to Play\nPress C to see the Credits";
                     Vector2 titlePosition = new Vector2(_graphics.GraphicsDevice.Viewport.Width / 2 - _titleTextFont.MeasureString(titleText).X / 2, _graphics.GraphicsDevice.Viewport.Height / 2 - _titleTextFont.MeasureString(titleText).Y / 2);
 
                     _spriteBatch.DrawString(_titleTextFont, titleText, titlePosition + new Vector2(2, 2), new Color(242f / 255, 70f / 255, 80f / 255, 1f));
