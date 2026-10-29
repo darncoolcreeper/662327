@@ -37,17 +37,6 @@ namespace MGGameLibrary.Scenes
             spriteBatch.End();
         }
 
-        //public override void Update(GameTime gameTime)
-        //{
-        //    if (Keyboard.GetState().IsKeyDown(Keys.Space))
-        //    {
-        //        SceneManager.ChangeScene(new GameScene(Game));
-
-        //    }
-        //    if (Keyboard.GetState().IsKeyDown(Keys.C))
-        //    {
-        //        SceneManager.ChangeScene(new CreditsScene(Game));
-        //    }
-        //}
+        
     }
 }

@@ -9,26 +9,29 @@ using Microsoft.Xna.Framework;
 
 namespace MainQuest3_AztecDeflect
 {
-    internal class Disc : PhysicsObject, ICollidable
+    public class Disc : PhysicsObject, ICollidable
     {
-        public const int DISC_RADIUS = 5;
+        public const int DISC_RADIUS = 15;
 
-        public const int DISC_MASS = 5;
+        public const int DISC_MASS = 15;
 
         public Circle _circle;
-        //public Shape Shape;
+        
 
         public Disc(float mass, Vector2 position, Game game) : base(mass, position, game)
         {
-
+            Position = position;
+            _circle = new Circle(Position, DISC_RADIUS);
         }
 
-        public Shape Shape => throw new NotImplementedException();
+        public Shape Shape { get { return new Circle(Position, DISC_RADIUS); } }
 
         public override void Update(float deltaTime)
         {
             base.Update(deltaTime);
             _circle.Position = Position;
+            
+
         }
         public bool CollidesWith(ICollidable other)
         {

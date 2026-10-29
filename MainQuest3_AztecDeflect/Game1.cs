@@ -24,6 +24,8 @@ namespace MainQuest3_AztecDeflect
         public List<EnergyOrb> _orbsList;
         public List<ICollidable> _obstaclesList;
 
+        public List<Disc> _discsList;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -39,10 +41,14 @@ namespace MainQuest3_AztecDeflect
 
             _orbsList = new List<EnergyOrb>();
             _obstaclesList = new List<ICollidable>();
+            _discsList = new List<Disc>();
+
+            _discsList.Add(new Disc(5, new Vector2(GraphicsDevice.Viewport.Width / 2, 0), this));
+            
 
             _obstaclesList.Add(new Obstacle(
             new Circle(new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2), 30)));
-            //more obstacles
+            
 
 
             _obstaclesList.Add(new Obstacle(
@@ -118,16 +124,6 @@ namespace MainQuest3_AztecDeflect
                         }
 
                     }
-                    //for (int i = 0; i < _orbsList.Count; ++i)
-                    //{
-                    //    foreach (Obstacle obstacle in _obstaclesList)
-                    //    {
-                    //        if (obstacle.CollidesWith(_orbsList[i]))
-                    //        {
-                    //            _orbsList[i].Velocity = Vector2.Zero;
-                    //        }
-                    //    }
-                    //}
 
                     Vector2 collisionNormal = Vector2.Zero;
                     for (int i = 0; i < _orbsList.Count; ++i)
@@ -141,7 +137,28 @@ namespace MainQuest3_AztecDeflect
                             }
                         }
                     }
-                    //_sceneManager.Update(gameTime);
+                    for (int i = 0; i < _discsList.Count; ++i)
+                    {
+                        _discsList[i].ApplyForce(new Vector2(0, 25000f)); // gravity (incorrect)
+                        _discsList[i].Update((float)TargetElapsedTime.TotalSeconds);
+
+                        foreach (Obstacle obstacle in _obstaclesList)
+                        {
+                            Disc disc = _discsList[i];
+                            if (obstacle.CollidesWith(disc, ref collisionNormal))
+                            {
+                                disc.RevertToPreviousPosition();
+                                disc.Velocity = Vector2.Reflect(disc.Velocity, collisionNormal);
+                            }
+                        }
+                    }
+
+
+
+
+
+
+
                     RemoveOrbs();
                     base.Update(gameTime);
 
@@ -187,6 +204,13 @@ namespace MainQuest3_AztecDeflect
 
                             _spriteBatch.Draw(textures, r, new Rectangle(256, 0, 256, 256), Color.White);
                         }
+                    }
+                    foreach (Disc disc in _discsList)
+                    {
+                        Circle circle = disc.Shape as Circle;
+                        Rectangle r = new Rectangle((int)(disc.Position.X - circle.radius), (int)(circle.Centre.Y - circle.radius), (int)circle.radius * 2, (int)circle.radius * 2);
+
+                        _spriteBatch.Draw(textures, r, new Rectangle(512, 0, 256, 256), Color.Red);
                     }
 
                     _spriteBatch.End();
