@@ -13,7 +13,7 @@ namespace MainQuest3_AztecDeflect
     {
         public const int DISC_RADIUS = 15;
 
-        public const int DISC_MASS = 15;
+        public const int DISC_MASS = 10;
 
         public Circle _circle;
         
@@ -24,7 +24,10 @@ namespace MainQuest3_AztecDeflect
             _circle = new Circle(Position, DISC_RADIUS);
         }
 
-        public Shape Shape { get { return new Circle(Position, DISC_RADIUS); } }
+        public Shape Shape
+        {
+            get { return _circle; }
+        }
 
         public override void Update(float deltaTime)
         {
@@ -42,5 +45,7 @@ namespace MainQuest3_AztecDeflect
         {
             throw new NotImplementedException();
         }
+
+
     }
 }

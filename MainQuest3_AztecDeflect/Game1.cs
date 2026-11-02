@@ -139,7 +139,7 @@ namespace MainQuest3_AztecDeflect
                     }
                     for (int i = 0; i < _discsList.Count; ++i)
                     {
-                        _discsList[i].ApplyForce(new Vector2(0, 25000f)); // gravity (incorrect)
+                        _discsList[i].ApplyGravity();
                         _discsList[i].Update((float)TargetElapsedTime.TotalSeconds);
 
                         foreach (Obstacle obstacle in _obstaclesList)
@@ -157,7 +157,7 @@ namespace MainQuest3_AztecDeflect
 
 
 
-
+                    
 
                     RemoveOrbs();
                     base.Update(gameTime);
@@ -240,5 +240,7 @@ namespace MainQuest3_AztecDeflect
             }
 
         }
+
+
     }
 }
