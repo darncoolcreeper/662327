@@ -147,8 +147,10 @@ namespace MainQuest3_AztecDeflect
                             Disc disc = _discsList[i];
                             if (obstacle.CollidesWith(disc, ref collisionNormal))
                             {
+                                
                                 disc.RevertToPreviousPosition();
-                                disc.Velocity = Vector2.Reflect(disc.Velocity, collisionNormal);
+                                Vector2 desiredVelocity = Vector2.Reflect(disc.Velocity, collisionNormal);
+                                disc.ApplyImpulse(desiredVelocity - disc.Velocity, (float)TargetElapsedTime.TotalSeconds);
                             }
                         }
                     }

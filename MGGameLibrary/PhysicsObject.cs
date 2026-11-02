@@ -55,5 +55,12 @@ namespace MGGameLibrary
             const float GRAVITY = 250f; // pixels per second squared
             _force += new Vector2(0, GRAVITY * _mass);
         }
+
+        public void ApplyImpulse(Vector2 changeInVelocity, float deltaTime)
+        {
+            // F = m * dv / dt
+            Vector2 force = _mass * changeInVelocity / deltaTime;
+            ApplyForce(force);
+        }
     }
 }
