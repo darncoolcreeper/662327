@@ -43,22 +43,35 @@ namespace MainQuest3_AztecDeflect
             _obstaclesList = new List<ICollidable>();
             _discsList = new List<Disc>();
 
-            _discsList.Add(new Disc(5, new Vector2(GraphicsDevice.Viewport.Width / 2, 0), this));
-            
+            //_discsList.Add(new Disc(5, new Vector2(GraphicsDevice.Viewport.Width / 2, 0), this));
+
+
+            //_obstaclesList.Add(new Obstacle(
+            //new Circle(new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2), 30)));
+
+
+
+            //_obstaclesList.Add(new Obstacle(
+            //new Circle(new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 4), 30)));
+
+            //_obstaclesList.Add(new Obstacle(
+            //new Circle(new Vector2(GraphicsDevice.Viewport.Width / 4, GraphicsDevice.Viewport.Height / 3), 40)));
+
+            //_obstaclesList.Add(new Obstacle(
+            //new Circle(new Vector2(GraphicsDevice.Viewport.Width * (0.75f), GraphicsDevice.Viewport.Height / 3), 40)));
+
+            int h = GraphicsDevice.Viewport.Height / 2;
 
             _obstaclesList.Add(new Obstacle(
-            new Circle(new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2), 30)));
-            
-
-
+                new Circle(new Vector2(GraphicsDevice.Viewport.Width / 4, h), 40)));
             _obstaclesList.Add(new Obstacle(
-            new Circle(new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 4), 30)));
+                new Circle(new Vector2(GraphicsDevice.Viewport.Width * 3 / 4, h), 40)));
 
-            _obstaclesList.Add(new Obstacle(
-            new Circle(new Vector2(GraphicsDevice.Viewport.Width / 4, GraphicsDevice.Viewport.Height / 3), 40)));
+            _discsList.Add(new Disc(5, new Vector2(GraphicsDevice.Viewport.Width / 3, GraphicsDevice.Viewport.Height / 2), this));
+            _discsList.Add(new Disc(5, new Vector2(GraphicsDevice.Viewport.Width * 2 / 3, GraphicsDevice.Viewport.Height / 2), this));
 
-            _obstaclesList.Add(new Obstacle(
-            new Circle(new Vector2(GraphicsDevice.Viewport.Width * (0.75f), GraphicsDevice.Viewport.Height / 3), 40)));
+            _discsList[0].ApplyImpulse(new Vector2(100, 0), (float)TargetElapsedTime.TotalSeconds);
+            _discsList[1].ApplyImpulse(new Vector2(-100, 0), (float)TargetElapsedTime.TotalSeconds);
 
             _sceneManager = new SceneManager();
 
@@ -139,7 +152,7 @@ namespace MainQuest3_AztecDeflect
                     }
                     for (int i = 0; i < _discsList.Count; ++i)
                     {
-                        _discsList[i].ApplyGravity();
+                        //_discsList[i].ApplyGravity();
                         _discsList[i].Update((float)TargetElapsedTime.TotalSeconds);
 
                         foreach (Obstacle obstacle in _obstaclesList)
@@ -154,12 +167,32 @@ namespace MainQuest3_AztecDeflect
                             }
                         }
                     }
+                    for (int i = 0; i < _discsList.Count; i++)
+                    {
+                        for (int j = i + 1; j < _discsList.Count; j++)
+                        {
+                            Circle c1 = (Circle)_discsList[i].Shape;
+                            Circle c2 = (Circle)_discsList[j].Shape;
+
+                            if (c1.Intersects(c2))
+                            {
+                                
+                                Vector2 parallel1 = Vector2.Dot(_discsList[i].Velocity, collisionNormal) * collisionNormal;
+                                Vector2 perpendicular1 = _discsList[i].Velocity - parallel1;
+                                Vector2 parallel2 = Vector2.Dot(_discsList[j].Velocity, collisionNormal) * collisionNormal;
+                                Vector2 perpendicular2 = _discsList[j].Velocity - parallel2;
+
+                                _discsList[j].Velocity = perpendicular1 + parallel2;
+                                _discsList[i].Velocity = perpendicular2 + parallel1;
+                            }
+                        }
+                    }
 
 
 
 
 
-                    
+
 
                     RemoveOrbs();
                     base.Update(gameTime);

@@ -10,12 +10,13 @@ using System.Threading.Tasks;
 
 namespace MainQuest3_AztecDeflect
 {
-    public class EnergyOrb : GameComponent, ICollidable
+    public class EnergyOrb : PhysicsObject, ICollidable
     {
         const int ORB_RADIUS = 5;
-        public Vector2 Position;
-        public Vector2 Velocity;
-        public Vector2 _previousPosition;
+        //public Vector2 Position;
+        //public Vector2 Velocity;
+        //public Vector2 _previousPosition;
+        public const int ORB_MASS = 5;
 
         public Rectangle Rectangle
         {
@@ -26,7 +27,7 @@ namespace MainQuest3_AztecDeflect
         }
 
         
-        public EnergyOrb(Vector2 position, Vector2 velocity, Game game) : base(game)
+        public EnergyOrb(Vector2 position, Vector2 velocity, Game game) : base(ORB_MASS, position, game)
         {
             this.Position = position;
             this.Velocity = velocity;
@@ -40,9 +41,7 @@ namespace MainQuest3_AztecDeflect
 
         public override void Update(GameTime gameTime)
         {
-            _previousPosition = Position;
-            Position = Position + (float)gameTime.ElapsedGameTime.TotalSeconds * Velocity; // Euler Integration
-            base.Update(gameTime);
+            base.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
 
 
         }
