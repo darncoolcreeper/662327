@@ -60,18 +60,32 @@ namespace MainQuest3_AztecDeflect
             //_obstaclesList.Add(new Obstacle(
             //new Circle(new Vector2(GraphicsDevice.Viewport.Width * (0.75f), GraphicsDevice.Viewport.Height / 3), 40)));
 
+            //int h = GraphicsDevice.Viewport.Height / 2;
+
+            //_obstaclesList.Add(new Obstacle(
+            //    new Circle(new Vector2(GraphicsDevice.Viewport.Width / 4, h), 40)));
+            //_obstaclesList.Add(new Obstacle(
+            //    new Circle(new Vector2(GraphicsDevice.Viewport.Width * 3 / 4, h), 40)));
+
+
+            //_discsList.Add(new Disc(5, new Vector2(GraphicsDevice.Viewport.Width / 3, GraphicsDevice.Viewport.Height / 2), this));
+            //_discsList.Add(new Disc(5, new Vector2(GraphicsDevice.Viewport.Width * 2 / 3, GraphicsDevice.Viewport.Height / 2), this));
+            //_discsList.Add(new Disc(5, new Vector2(GraphicsDevice.Viewport.Width * 2 / 3 - 35, GraphicsDevice.Viewport.Height / 2), this));
+            //_discsList.Add(new Disc(5, new Vector2(GraphicsDevice.Viewport.Width * 2 / 3 - 70, GraphicsDevice.Viewport.Height / 2), this));
+            //_discsList.Add(new Disc(5, new Vector2(GraphicsDevice.Viewport.Width * 2 / 3 - 105, GraphicsDevice.Viewport.Height / 2), this));
+            //_discsList.Add(new Disc(5, new Vector2(GraphicsDevice.Viewport.Width * 2 / 3 - 140, GraphicsDevice.Viewport.Height / 2), this));
+
+            //_discsList[0].ApplyImpulse(new Vector2(100, 0), (float)TargetElapsedTime.TotalSeconds);
+            //_discsList[1].ApplyImpulse(new Vector2(-100, 0), (float)TargetElapsedTime.TotalSeconds);
+
             int h = GraphicsDevice.Viewport.Height / 2;
+            int w = GraphicsDevice.Viewport.Width / 2;
+            _obstaclesList.Add(new Obstacle(new Circle(new Vector2(150, h), 75)));
+            _obstaclesList.Add(new Obstacle(new Circle(new Vector2(GraphicsDevice.Viewport.Width - 150, h), 75)));
+            _obstaclesList.Add(new Obstacle(new Circle(new Vector2(w, 75), 75)));
 
-            _obstaclesList.Add(new Obstacle(
-                new Circle(new Vector2(GraphicsDevice.Viewport.Width / 4, h), 40)));
-            _obstaclesList.Add(new Obstacle(
-                new Circle(new Vector2(GraphicsDevice.Viewport.Width * 3 / 4, h), 40)));
+            _obstaclesList.Add(new Obstacle(new Square(new Vector2(w - 100 / 2, h - 100 / 2), 100)));
 
-            _discsList.Add(new Disc(5, new Vector2(GraphicsDevice.Viewport.Width / 3, GraphicsDevice.Viewport.Height / 2), this));
-            _discsList.Add(new Disc(5, new Vector2(GraphicsDevice.Viewport.Width * 2 / 3, GraphicsDevice.Viewport.Height / 2), this));
-
-            _discsList[0].ApplyImpulse(new Vector2(100, 0), (float)TargetElapsedTime.TotalSeconds);
-            _discsList[1].ApplyImpulse(new Vector2(-100, 0), (float)TargetElapsedTime.TotalSeconds);
 
             _sceneManager = new SceneManager();
 
@@ -97,7 +111,8 @@ namespace MainQuest3_AztecDeflect
             {
                 case FlashScene flashScene:
                     flashScene.Update(gameTime);
-                    if(flashScene.Finished)
+                    //mouse down skips it
+                    if(flashScene.Finished || Mouse.GetState().LeftButton == ButtonState.Pressed)
                     {
                         _sceneManager.ChangeScene(new TitleScene("Aztec Deflect", this));
                     }
@@ -233,11 +248,18 @@ namespace MainQuest3_AztecDeflect
                     }
                     foreach (ICollidable obstacle in _obstaclesList)
                     {
+                        
+                        
                         if (obstacle.Shape is Circle circle)
                         {
                             Rectangle r = new Rectangle((int)(circle.Centre.X - circle.radius), (int)(circle.Centre.Y - circle.radius), (int)circle.radius * 2, (int)circle.radius * 2);
 
                             _spriteBatch.Draw(textures, r, new Rectangle(256, 0, 256, 256), Color.White);
+                        }
+                        else if (obstacle.Shape is Square square)
+                        {
+                            Rectangle r = new Rectangle((int)square.Position.X, (int)square.Position.Y, (int)square.size, (int)square.size);
+                            _spriteBatch.Draw(textures, r, new Rectangle(256, 256, 256, 256), Color.White);
                         }
                     }
                     foreach (Disc disc in _discsList)

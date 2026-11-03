@@ -9,7 +9,7 @@ namespace MGGameLibrary.Shapes
 {
     public class Square : Shape
     {
-        protected float size;
+        public float size;
 
         public Square(Vector2 position, float size) : base(position)
         {
@@ -38,7 +38,8 @@ namespace MGGameLibrary.Shapes
 
         public override bool Intersects(Shape other, ref Vector2 collisionNormal)
         {
-            throw new NotImplementedException();
+            return false;
+            //return other.IntersectsSquare(this, ref collisionNormal);
         }
 
         public override bool IntersectsCircle(Circle circle)
