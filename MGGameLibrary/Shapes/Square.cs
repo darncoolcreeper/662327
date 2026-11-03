@@ -38,8 +38,28 @@ namespace MGGameLibrary.Shapes
 
         public override bool Intersects(Shape other, ref Vector2 collisionNormal)
         {
+            if (other is Circle circle)
+                return IntersectsCircle(circle, ref collisionNormal);
+
+            if (other is Square square)
+            {
+                bool collision =
+                    Position.X < square.Position.X + square.size &&
+                    Position.X + size > square.Position.X &&
+                    Position.Y < square.Position.Y + square.size &&
+                    Position.Y + size > square.Position.Y;
+
+                if (collision)
+                {
+                    collisionNormal =
+                        Vector2.Normalize(Position - square.Position);
+                }
+
+                return collision;
+            }
+
+            collisionNormal = Vector2.Zero;
             return false;
-            //return other.IntersectsSquare(this, ref collisionNormal);
         }
 
         public override bool IntersectsCircle(Circle circle)
@@ -63,7 +83,7 @@ namespace MGGameLibrary.Shapes
 
         public override bool IntersectsCircle(Circle other, ref Vector2 collisionNormal)
         {
-            throw new NotImplementedException();
+            return Shape.Intersects(other, this, ref collisionNormal);
         }
 
         public override bool IsInside(Point point)

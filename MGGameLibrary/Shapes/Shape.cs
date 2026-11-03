@@ -29,5 +29,25 @@ namespace MGGameLibrary.Shapes
 
         public abstract bool Intersects(Shape other, ref Vector2 collisionNormal);
         public abstract bool IntersectsCircle(Circle other, ref Vector2 collisionNormal);
+
+        public static bool Intersects(Circle c, Square s, ref Vector2 collisionNormal)
+        {
+            // Find the closest point on the square to the circle's center
+            float closestX = Math.Clamp(c.Centre.X, s.Position.X, s.Position.X + s.size);
+            float closestY = Math.Clamp(c.Centre.Y, s.Position.Y, s.Position.Y + s.size);
+            Vector2 closestPoint = new Vector2(closestX, closestY);
+
+            // Vector from closest point to circle center
+            Vector2 diff = c.Centre - closestPoint;
+            float distanceSquared = diff.LengthSquared();
+
+            if (distanceSquared <= c.radius * c.radius)
+            {
+                collisionNormal = diff != Vector2.Zero ? Vector2.Normalize(diff) : Vector2.UnitY;
+                return true;
+            }
+            collisionNormal = Vector2.Zero;
+            return false;
+        }
     }
 }
