@@ -14,6 +14,7 @@ namespace MainQuest3_AztecDeflect
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
+        private SpriteFont _titleTextFont;
         private PlayerShip _ship;
 
         private Texture2D textures;
@@ -31,6 +32,8 @@ namespace MainQuest3_AztecDeflect
         private Random _random = new Random();
 
         public int lives = 3;
+
+        public int score = 0;
 
         public Game1()
         {
@@ -74,14 +77,16 @@ namespace MainQuest3_AztecDeflect
         {
             textures = Content.Load<Texture2D>("textures");
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+            _titleTextFont = Content.Load<SpriteFont>("TitleText");
 
             // TODO: use this.Content to load your game content here
         }
 
         protected override void Update(GameTime gameTime)
         {
-
-            switch(_sceneManager.CurrentScene)
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+                Exit();
+            switch (_sceneManager.CurrentScene)
             {
                 case FlashScene flashScene:
                     flashScene.Update(gameTime);
@@ -99,15 +104,27 @@ namespace MainQuest3_AztecDeflect
                         _sceneManager.CurrentScene = null;
 
                     }
-                    //if (Keyboard.GetState().IsKeyDown(Keys.C))
-                    //{
-                    //    _screen = Screen.CreditsScreen;
-                    //}
+                    if (Keyboard.GetState().IsKeyDown(Keys.C))
+                    {
+                        _sceneManager.ChangeScene(new CreditScene(this));
+                    }
+                    break;
+
+                case CreditScene creditScene:
+                    creditScene.Update(gameTime);
+                    if (Keyboard.GetState().IsKeyDown(Keys.T))
+                    {
+                        _sceneManager.ChangeScene(new TitleScene("Aztec Deflect", this));
+                    }
                     break;
                 default:
+                    if (lives <= 0)
+                    {
+                        _sceneManager.ChangeScene(new GameOverScreen(this, score));
+                        lives = 3;
+                    }
 
-                    if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                        Exit();
+                    
 
 
 
@@ -155,14 +172,25 @@ namespace MainQuest3_AztecDeflect
                     }
                     for (int i = _discsList.Count - 1; i >= 0; i--)
                     {
-                        if (_discsList[i].Position.Y > GraphicsDevice.Viewport.Height)
-                        {
-                            Components.Remove(_discsList[i]);
-                            lives--;
+                        Disc disc = _discsList[i];
 
-                            break;
+                        if (disc.Position.X < 0 ||
+                            disc.Position.X > GraphicsDevice.Viewport.Width)
+                        {
+                            Components.Remove(disc);
+                            _discsList.RemoveAt(i);
+
+                            score += 100;
+                        }
+                        else if (disc.Position.Y > GraphicsDevice.Viewport.Height)
+                        {
+                            Components.Remove(disc);
+                            _discsList.RemoveAt(i);
+
+                            lives--;
                         }
                     }
+
                     for (int i = 0; i < _discsList.Count; ++i)
                     {
                         _discsList[i].ApplyGravity();
@@ -266,6 +294,12 @@ namespace MainQuest3_AztecDeflect
                 case TitleScene titleScene:
                     titleScene.Draw(gameTime, _spriteBatch);
                     break;
+                case CreditScene creditScene:
+                    creditScene.Draw(gameTime, _spriteBatch);
+                    break;
+                case GameOverScreen gameOverScene:
+                    gameOverScene.Draw(gameTime, _spriteBatch);
+                    break;
                 default:
 
                     GraphicsDevice.Clear(Color.CornflowerBlue);
@@ -274,6 +308,12 @@ namespace MainQuest3_AztecDeflect
 
                     _spriteBatch.Begin();
                     _spriteBatch.Draw(textures, _ship._rectangle, shipRect, Color.White);
+                    //draw text in top left that says lives and score
+                    _spriteBatch.DrawString(_titleTextFont, $"Lives: {lives}", new Vector2(7, 7), Color.Black);
+                    _spriteBatch.DrawString(_titleTextFont, $"Lives: {lives}", new Vector2(5, 5), Color.White);
+
+                    _spriteBatch.DrawString(_titleTextFont, $"Points: {score}", new Vector2(_graphics.GraphicsDevice.Viewport.Width - _titleTextFont.MeasureString($"Points: {score}").X - 7, 7), Color.Black);
+                    _spriteBatch.DrawString(_titleTextFont, $"Points: {score}", new Vector2(_graphics.GraphicsDevice.Viewport.Width - _titleTextFont.MeasureString($"Points: {score}").X - 5, 5), Color.White);
 
                     foreach (EnergyOrb energyOrb in _orbsList)
                     {
