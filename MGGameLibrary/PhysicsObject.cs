@@ -52,7 +52,7 @@ namespace MGGameLibrary
         }
         public void ApplyGravity()
         {
-            const float GRAVITY = 250f; // pixels per second squared
+            const float GRAVITY = 200f; // pixels per second squared
             _force += new Vector2(0, GRAVITY * _mass);
         }
 

@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
+using static Microsoft.Xna.Framework.MathHelper;
 
 namespace MainQuest3_AztecDeflect
 {
@@ -26,6 +27,11 @@ namespace MainQuest3_AztecDeflect
 
         public List<Disc> _discsList;
 
+        private float _discSpawnTimer = 0f;
+        private Random _random = new Random();
+
+        public int lives = 3;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -43,46 +49,14 @@ namespace MainQuest3_AztecDeflect
             _obstaclesList = new List<ICollidable>();
             _discsList = new List<Disc>();
 
-            //_discsList.Add(new Disc(5, new Vector2(GraphicsDevice.Viewport.Width / 2, 0), this));
-
-
-            //_obstaclesList.Add(new Obstacle(
-            //new Circle(new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2), 30)));
-
-
-
-            //_obstaclesList.Add(new Obstacle(
-            //new Circle(new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 4), 30)));
-
-            //_obstaclesList.Add(new Obstacle(
-            //new Circle(new Vector2(GraphicsDevice.Viewport.Width / 4, GraphicsDevice.Viewport.Height / 3), 40)));
-
-            //_obstaclesList.Add(new Obstacle(
-            //new Circle(new Vector2(GraphicsDevice.Viewport.Width * (0.75f), GraphicsDevice.Viewport.Height / 3), 40)));
-
-            //int h = GraphicsDevice.Viewport.Height / 2;
-
-            //_obstaclesList.Add(new Obstacle(
-            //    new Circle(new Vector2(GraphicsDevice.Viewport.Width / 4, h), 40)));
-            //_obstaclesList.Add(new Obstacle(
-            //    new Circle(new Vector2(GraphicsDevice.Viewport.Width * 3 / 4, h), 40)));
-
-
-            //_discsList.Add(new Disc(5, new Vector2(GraphicsDevice.Viewport.Width / 3, GraphicsDevice.Viewport.Height / 2), this));
-            //_discsList.Add(new Disc(5, new Vector2(GraphicsDevice.Viewport.Width * 2 / 3, GraphicsDevice.Viewport.Height / 2), this));
-            //_discsList.Add(new Disc(5, new Vector2(GraphicsDevice.Viewport.Width * 2 / 3 - 35, GraphicsDevice.Viewport.Height / 2), this));
-            //_discsList.Add(new Disc(5, new Vector2(GraphicsDevice.Viewport.Width * 2 / 3 - 70, GraphicsDevice.Viewport.Height / 2), this));
-            //_discsList.Add(new Disc(5, new Vector2(GraphicsDevice.Viewport.Width * 2 / 3 - 105, GraphicsDevice.Viewport.Height / 2), this));
-            //_discsList.Add(new Disc(5, new Vector2(GraphicsDevice.Viewport.Width * 2 / 3 - 140, GraphicsDevice.Viewport.Height / 2), this));
-
-            //_discsList[0].ApplyImpulse(new Vector2(100, 0), (float)TargetElapsedTime.TotalSeconds);
-            //_discsList[1].ApplyImpulse(new Vector2(-100, 0), (float)TargetElapsedTime.TotalSeconds);
+            
 
             int h = GraphicsDevice.Viewport.Height / 2;
             int w = GraphicsDevice.Viewport.Width / 2;
             _obstaclesList.Add(new Obstacle(new Circle(new Vector2(150, h), 75)));
             _obstaclesList.Add(new Obstacle(new Circle(new Vector2(GraphicsDevice.Viewport.Width - 150, h), 75)));
-            _obstaclesList.Add(new Obstacle(new Circle(new Vector2(w, 75), 75)));
+            _obstaclesList.Add(new Obstacle(new Circle(new Vector2(w - 75, 75), 40)));
+            _obstaclesList.Add(new Obstacle(new Circle(new Vector2(w + 75, 75), 40)));
 
             _obstaclesList.Add(new Obstacle(new Square(new Vector2(w - 100 / 2, h - 100 / 2), 100)));
 
@@ -165,9 +139,33 @@ namespace MainQuest3_AztecDeflect
                             }
                         }
                     }
+                    _discSpawnTimer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                    if (_discSpawnTimer <= 0)
+                    {
+                        float x = _random.Next(50, GraphicsDevice.Viewport.Width - 50);
+
+                        Disc disc = new Disc(10, new Vector2(x, -100), this);
+
+                        
+
+                        _discsList.Add(disc);
+
+                        _discSpawnTimer = 1.5f;
+                    }
+                    for (int i = _discsList.Count - 1; i >= 0; i--)
+                    {
+                        if (_discsList[i].Position.Y > GraphicsDevice.Viewport.Height)
+                        {
+                            Components.Remove(_discsList[i]);
+                            lives--;
+
+                            break;
+                        }
+                    }
                     for (int i = 0; i < _discsList.Count; ++i)
                     {
-                        //_discsList[i].ApplyGravity();
+                        _discsList[i].ApplyGravity();
                         _discsList[i].Update((float)TargetElapsedTime.TotalSeconds);
 
                         foreach (Obstacle obstacle in _obstaclesList)
@@ -182,6 +180,7 @@ namespace MainQuest3_AztecDeflect
                             }
                         }
                     }
+                    //bounce discs off each other
                     for (int i = 0; i < _discsList.Count; i++)
                     {
                         for (int j = i + 1; j < _discsList.Count; j++)
@@ -200,6 +199,40 @@ namespace MainQuest3_AztecDeflect
                                 _discsList[j].Velocity = perpendicular1 + parallel2;
                                 _discsList[i].Velocity = perpendicular2 + parallel1;
                             }
+                        }
+                    }
+                    //bounce discs off orbs but acknowledges mass of discs and orbs, so the heavier disc will push the lighter orb away
+
+                    for (int i = 0; i < _orbsList.Count; i++)
+                    {
+                        for (int j = 0; j < _discsList.Count; j++)
+                        {
+                            collisionNormal = Vector2.Zero;
+
+                            if (_orbsList[i].CollidesWith(_discsList[j], ref collisionNormal))
+                            {
+                                _orbsList[i].RevertToPreviousPosition();
+
+                                float m1 = _orbsList[i]._mass;
+                                float m2 = _discsList[j]._mass;
+
+                                Vector2 v1 = _orbsList[i].Velocity;
+                                Vector2 v2 = _discsList[j].Velocity;
+
+                                float vn1 = Vector2.Dot(v1, collisionNormal);
+                                float vn2 = Vector2.Dot(v2, collisionNormal);
+
+                                float newVn1 = (vn1 * (m1 - m2) + 2 * m2 * vn2) / (m1 + m2);
+
+                                float newVn2 = (vn2 * (m2 - m1) + 2 * m1 * vn1) / (m1 + m2);
+
+                                _orbsList[i].Velocity += (newVn1 - vn1) * collisionNormal;
+
+                                _discsList[j].Velocity += (newVn2 - vn2) * collisionNormal;
+                            }
+
+
+
                         }
                     }
 
