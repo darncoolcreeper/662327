@@ -35,6 +35,8 @@ namespace MainQuest3_AztecDeflect
 
         public int score = 0;
 
+        public Texture2D triangleTexture;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -48,6 +50,7 @@ namespace MainQuest3_AztecDeflect
             _ship = new PlayerShip(this);
             Components.Add(_ship);
 
+            triangleTexture = Content.Load<Texture2D>("triangle");
             _orbsList = new List<EnergyOrb>();
             _obstaclesList = new List<ICollidable>();
             _discsList = new List<Disc>();
@@ -62,7 +65,7 @@ namespace MainQuest3_AztecDeflect
             _obstaclesList.Add(new Obstacle(new Circle(new Vector2(w + 75, 75), 40)));
 
             _obstaclesList.Add(new Obstacle(new Square(new Vector2(w - 100 / 2, h - 100 / 2), 100)));
-
+            _obstaclesList.Add(new Obstacle(new Triangle(new Vector2(w - 150, h + 50), 50)));
 
             _sceneManager = new SceneManager();
 
@@ -117,14 +120,26 @@ namespace MainQuest3_AztecDeflect
                         _sceneManager.ChangeScene(new TitleScene("Aztec Deflect", this));
                     }
                     break;
+                case GameOverScreen gameOverScene:
+                    gameOverScene.Update(gameTime);
+                    if (Keyboard.GetState().IsKeyDown(Keys.R))
+                    {
+                        _sceneManager.ChangeScene(new TitleScene("Aztec Deflect", this));
+                        score = 0;
+                    }
+                    break;
                 default:
                     if (lives <= 0)
                     {
                         _sceneManager.ChangeScene(new GameOverScreen(this, score));
                         lives = 3;
+                        //reset ship position and remove all discs and orbs
+                        
+                        _discsList.Clear();
+                        _orbsList.Clear();
                     }
 
-                    
+
 
 
 
@@ -208,7 +223,9 @@ namespace MainQuest3_AztecDeflect
                             }
                         }
                     }
+
                     //bounce discs off each other
+
                     for (int i = 0; i < _discsList.Count; i++)
                     {
                         for (int j = i + 1; j < _discsList.Count; j++)
@@ -226,10 +243,16 @@ namespace MainQuest3_AztecDeflect
 
                                 _discsList[j].Velocity = perpendicular1 + parallel2;
                                 _discsList[i].Velocity = perpendicular2 + parallel1;
+
+
+
                             }
                         }
                     }
-                    //bounce discs off orbs but acknowledges mass of discs and orbs, so the heavier disc will push the lighter orb away
+
+
+
+                    //bounce discs off orbs
 
                     for (int i = 0; i < _orbsList.Count; i++)
                     {
@@ -333,6 +356,12 @@ namespace MainQuest3_AztecDeflect
                         {
                             Rectangle r = new Rectangle((int)square.Position.X, (int)square.Position.Y, (int)square.size, (int)square.size);
                             _spriteBatch.Draw(textures, r, new Rectangle(256, 256, 256, 256), Color.White);
+                        }
+                        else if (obstacle.Shape is Triangle triangle)
+                        {
+                            //draw a rectangle with triangle texture.
+                            Rectangle r = new Rectangle((int)triangle.Position.X, (int)triangle.Position.Y, (int)triangle.size, (int)triangle.size);
+                            _spriteBatch.Draw(triangleTexture, r, Color.White); 
                         }
                     }
                     foreach (Disc disc in _discsList)

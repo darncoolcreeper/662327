@@ -9,7 +9,7 @@ namespace MGGameLibrary.Shapes
 {
     public class Triangle : Shape
     {
-        protected float size;
+        public float size;
 
         public Triangle(Vector2 position, float size) : base(position)
         {
@@ -19,22 +19,42 @@ namespace MGGameLibrary.Shapes
 
         public override bool Intersects(Shape other)
         {
-            throw new NotImplementedException();
+            if (other is Circle circle)
+                return IntersectsCircle(circle);
+
+            if (other is Triangle triangle)
+            {
+                
+                return IsInside(new Point((int)triangle.Position.X, (int)triangle.Position.Y)) || triangle.IsInside(new Point((int)Position.X, (int)Position.Y));
+            }
+
+            if (other is Square square)
+            {
+                return square.Intersects(this);
+            }
+
+            return false;
         }
 
         public override bool Intersects(Shape other, ref Vector2 collisionNormal)
         {
-            throw new NotImplementedException();
+            if (other is Circle circle)
+                return IntersectsCircle(circle, ref collisionNormal);
+
+            collisionNormal = Vector2.Zero;
+            return false;
         }
 
         public override bool IntersectsCircle(Circle circle)
         {
-            throw new NotImplementedException();
+            Vector2 normal = Vector2.Zero;
+            return Shape.Intersects(circle, this, ref normal);
         }
 
         public override bool IntersectsCircle(Circle other, ref Vector2 collisionNormal)
         {
-            throw new NotImplementedException();
+            return Shape.Intersects(other, this, ref collisionNormal);
+
         }
 
         public override bool IsInside(Point point)
