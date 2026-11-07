@@ -2,12 +2,17 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
+
 namespace MainQuest4_DragonDrop
 {
     public class Game1 : Game
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+
+        public Agent _agent;
+
+        public Texture2D dragons;
 
         public Game1()
         {
@@ -18,7 +23,10 @@ namespace MainQuest4_DragonDrop
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            _agent = new Agent(new Vector2(100, 100), 0, this);
+            Components.Add(_agent);
+            dragons = Content.Load<Texture2D>("dragons");
+
 
             base.Initialize();
         }
@@ -44,9 +52,16 @@ namespace MainQuest4_DragonDrop
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            _spriteBatch.Begin();
+
+            _spriteBatch.Draw(dragons, _agent.Position, new Rectangle(0, 0, dragons.Width / 3, dragons.Height / 2), Color.White, _agent.Heading, new Vector2(dragons.Width / 6, dragons.Height / 4), 1.0f, SpriteEffects.None, 0f);
+
+            _spriteBatch.End();
+            base.Draw(gameTime);
 
             base.Draw(gameTime);
         }
+
+        
     }
 }
