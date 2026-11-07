@@ -13,6 +13,7 @@ namespace MainQuest4_DragonDrop
         public Agent _agent;
 
         public Texture2D dragons;
+        public Texture2D coins;
 
         public Game1()
         {
@@ -26,7 +27,7 @@ namespace MainQuest4_DragonDrop
             _agent = new Agent(new Vector2(100, 100), 0, this);
             Components.Add(_agent);
             dragons = Content.Load<Texture2D>("dragons");
-
+            coins = Content.Load<Texture2D>("coins");
 
             base.Initialize();
         }
@@ -55,6 +56,8 @@ namespace MainQuest4_DragonDrop
             _spriteBatch.Begin();
 
             _spriteBatch.Draw(dragons, _agent.Position, new Rectangle(0, 0, dragons.Width / 3, dragons.Height / 2), Color.White, _agent.Heading, new Vector2(dragons.Width / 6, dragons.Height / 4), 1.0f, SpriteEffects.None, 0f);
+
+            _spriteBatch.Draw(coins, new Vector2(200, 200), new Rectangle(0, 0, coins.Width / 4, coins.Height / 4), Color.White, 0f, new Vector2(coins.Width / 8, coins.Height / 8), 1.0f, SpriteEffects.None, 0f);
 
             _spriteBatch.End();
             base.Draw(gameTime);
