@@ -20,7 +20,7 @@ namespace MainQuest4_DragonDrop
         public Texture2D coins;
         public Texture2D rock;
 
-
+        public Color _backgroundColour;
         public Coin _coin;
 
         private bool _dragged = false;
@@ -92,7 +92,16 @@ namespace MainQuest4_DragonDrop
 
 
 
+            LineSegment toCoin = new LineSegment(_agent.Position, _coin.Circle.Centre);
 
+            if (Shape.Intersects(toCoin, _rock.circle))
+            {
+                _backgroundColour = Color.SlateBlue;
+            }
+            else
+            {
+                _backgroundColour = Color.CornflowerBlue;
+            }
 
 
 
@@ -110,7 +119,7 @@ namespace MainQuest4_DragonDrop
         
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(_backgroundColour);
 
             _spriteBatch.Begin();
             

@@ -151,6 +151,19 @@ namespace MGGameLibrary.Shapes
             return false;
         }
 
+        public static bool Intersects(LineSegment line, Circle circle)
+        {
+            // Find the closest point on the line segment to the circle's center
+            Vector2 lineDir = line.End - line.Start;
+            Vector2 toCircle = circle.Centre - line.Start;
 
+            float t = Vector2.Dot(toCircle, lineDir) / Vector2.Dot(lineDir, lineDir);
+            t = MathHelper.Clamp(t, 0.0f, 1.0f);
+
+            Vector2 closestPoint = line.Start + t * lineDir;
+            // Check if the distance from the closest point to the circle's center is less than or equal to the radius
+            float distanceSquared = Vector2.DistanceSquared(closestPoint, circle.Centre);
+            return distanceSquared <= circle.radius * circle.radius;
+        }
     }
 }
