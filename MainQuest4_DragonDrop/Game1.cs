@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using MGGameLibrary.Shapes;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -14,7 +15,7 @@ namespace MainQuest4_DragonDrop
 
         public Texture2D dragons;
         public Texture2D coins;
-
+        public Coin _coin;
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -24,10 +25,11 @@ namespace MainQuest4_DragonDrop
 
         protected override void Initialize()
         {
-            _agent = new Agent(new Vector2(100, 100), 0, this);
+            
+            _coin = new Coin(new Circle(new Vector2(200, 200), 20), Rectangle.Empty);
+            _agent = new Agent(new Vector2(100, 100), 0, new SeekBehaviour(_coin), this);
             Components.Add(_agent);
-            dragons = Content.Load<Texture2D>("dragons");
-            coins = Content.Load<Texture2D>("coins");
+            
 
             base.Initialize();
         }
@@ -35,6 +37,8 @@ namespace MainQuest4_DragonDrop
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+            dragons = Content.Load<Texture2D>("dragons");
+            coins = Content.Load<Texture2D>("coins");
 
             // TODO: use this.Content to load your game content here
         }
@@ -57,12 +61,12 @@ namespace MainQuest4_DragonDrop
 
             _spriteBatch.Draw(dragons, _agent.Position, new Rectangle(0, 0, dragons.Width / 3, dragons.Height / 2), Color.White, _agent.Heading, new Vector2(dragons.Width / 6, dragons.Height / 4), 1.0f, SpriteEffects.None, 0f);
 
-            _spriteBatch.Draw(coins, new Vector2(200, 200), new Rectangle(0, 0, coins.Width / 4, coins.Height / 4), Color.White, 0f, new Vector2(coins.Width / 8, coins.Height / 8), 1.0f, SpriteEffects.None, 0f);
+            _spriteBatch.Draw(coins, _coin.Circle.Position, new Rectangle(0, 0, coins.Width / 4, coins.Height / 4), Color.White, 0f, new Vector2(coins.Width / 8, coins.Height / 8), 1.0f, SpriteEffects.None, 0f);
 
             _spriteBatch.End();
             base.Draw(gameTime);
 
-            base.Draw(gameTime);
+            
         }
 
         
