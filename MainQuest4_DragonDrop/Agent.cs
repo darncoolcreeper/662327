@@ -1,14 +1,15 @@
-﻿using Microsoft.Xna.Framework;
+﻿using MGGameLibrary;
+using MGGameLibrary.Shapes;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MGGameLibrary;
 
 namespace MainQuest4_DragonDrop
 {
-    public class Agent : GameComponent
+    public class Agent : GameComponent, ITargetable
     {
 
         public SteeringBehaviour _behaviour;
@@ -16,6 +17,7 @@ namespace MainQuest4_DragonDrop
 
         public float Heading;
 
+        public Vector2 TargetPosition => Position;
         public Vector2 Position { get { return _physicsObject.Position; } set { _physicsObject.Position = value; } }
 
         public Vector2 Velocity { get { return _physicsObject.Velocity; } set { _physicsObject.Velocity = value; } }

@@ -13,6 +13,7 @@ namespace MainQuest4_DragonDrop
         private SpriteBatch _spriteBatch;
 
         public Agent _agent;
+        public Agent _agent2;
 
         public Texture2D dragons;
         public Texture2D coins;
@@ -34,8 +35,10 @@ namespace MainQuest4_DragonDrop
             
             _coin = new Coin(new Circle(new Vector2(200, 200), 32), Rectangle.Empty);
             _agent = new Agent(new Vector2(100, 100), 0, new SeekBehaviour(_coin), this);
+            _agent2 = new Agent(new Vector2(300, 300), 0, new SeekBehaviour(_agent), this);
             Components.Add(_agent);
-            
+            Components.Add(_agent2);
+
 
             base.Initialize();
         }
@@ -103,8 +106,8 @@ namespace MainQuest4_DragonDrop
             
             _spriteBatch.Draw(coins, _coin.Circle.Centre, new Rectangle(30, 30, coins.Width / 4, coins.Height / 4), Color.White, 0f, new Vector2(coins.Width / 8, coins.Height / 8), 1.0f, SpriteEffects.None, 0f);
             _spriteBatch.Draw(dragons, _agent.Position, new Rectangle(0, 0, dragons.Width / 3, dragons.Height / 2), Color.White, _agent.Heading, new Vector2(dragons.Width / 6, dragons.Height / 4), 1.0f, SpriteEffects.None, 0f);
+            _spriteBatch.Draw(dragons, _agent2.Position, new Rectangle(dragons.Width / 3, dragons.Height / 2, dragons.Width / 3, dragons.Height / 2), Color.White, _agent2.Heading, new Vector2(dragons.Width / 6, dragons.Height / 4), 1.0f, SpriteEffects.None, 0f);
 
-            
 
             _spriteBatch.End();
             base.Draw(gameTime);
