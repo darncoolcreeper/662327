@@ -32,5 +32,11 @@ namespace MainQuest4_DragonDrop
         {
             TextureRectangle = new Rectangle((int)(Circle.Position.X - Circle.radius), (int)(Circle.Position.Y - Circle.radius), (int)(Circle.radius * 2), (int)(Circle.radius * 2));
         }
+
+        public void MoveCoin(Vector2 newPosition)
+        {
+            Circle.Position = newPosition;
+            UpdateTextureRectangle();
+        }
     }
 }

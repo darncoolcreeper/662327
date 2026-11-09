@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Runtime.InteropServices;
 
 
 namespace MainQuest4_DragonDrop
@@ -16,6 +17,11 @@ namespace MainQuest4_DragonDrop
         public Texture2D dragons;
         public Texture2D coins;
         public Coin _coin;
+
+        private bool _dragged = false;
+        private Vector2 _dragOffset;
+
+        
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -26,7 +32,7 @@ namespace MainQuest4_DragonDrop
         protected override void Initialize()
         {
             
-            _coin = new Coin(new Circle(new Vector2(200, 200), 20), Rectangle.Empty);
+            _coin = new Coin(new Circle(new Vector2(200, 200), 32), Rectangle.Empty);
             _agent = new Agent(new Vector2(100, 100), 0, new SeekBehaviour(_coin), this);
             Components.Add(_agent);
             
@@ -48,6 +54,42 @@ namespace MainQuest4_DragonDrop
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+
+
+
+            MouseState mouse = Mouse.GetState();
+            
+
+            if (!_dragged && mouse.LeftButton == ButtonState.Pressed && _coin.Circle.IsInside(mouse.Position + new Point(16, 16)))
+            {
+                _dragged = true;
+                _dragOffset = _coin.Circle.Centre - mouse.Position.ToVector2();
+            }
+
+            if (_dragged)
+            {
+                _coin.MoveCoin(mouse.Position.ToVector2() + _dragOffset);
+            }
+
+            if (mouse.LeftButton == ButtonState.Released)
+            {
+                _dragged = false;
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             // TODO: Add your update logic here
 
             base.Update(gameTime);
@@ -58,10 +100,11 @@ namespace MainQuest4_DragonDrop
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             _spriteBatch.Begin();
-
+            
+            _spriteBatch.Draw(coins, _coin.Circle.Centre, new Rectangle(30, 30, coins.Width / 4, coins.Height / 4), Color.White, 0f, new Vector2(coins.Width / 8, coins.Height / 8), 1.0f, SpriteEffects.None, 0f);
             _spriteBatch.Draw(dragons, _agent.Position, new Rectangle(0, 0, dragons.Width / 3, dragons.Height / 2), Color.White, _agent.Heading, new Vector2(dragons.Width / 6, dragons.Height / 4), 1.0f, SpriteEffects.None, 0f);
 
-            _spriteBatch.Draw(coins, _coin.Circle.Position, new Rectangle(0, 0, coins.Width / 4, coins.Height / 4), Color.White, 0f, new Vector2(coins.Width / 8, coins.Height / 8), 1.0f, SpriteEffects.None, 0f);
+            
 
             _spriteBatch.End();
             base.Draw(gameTime);
