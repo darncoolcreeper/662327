@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 
@@ -15,6 +16,7 @@ namespace MainQuest4_DragonDrop
 
         public Agent _agent;
         public Agent _agent2;
+        public Agent _agent3;
 
         public Texture2D dragons;
         public Texture2D coins;
@@ -38,16 +40,27 @@ namespace MainQuest4_DragonDrop
         {
             int h = GraphicsDevice.Viewport.Height;
             int w = GraphicsDevice.Viewport.Width;
-
+            List<Vector2> pathPoints = new List<Vector2>()
+            {
+                new Vector2(w / 2, 20), // top
+                
+                new Vector2(w - 20, h / 2), // right
+                
+                new Vector2(w / 2, h - 20), // bottom
+               
+                new Vector2(20, h / 2), // left
+                
+            };
 
             _coin = new Coin(new Circle(new Vector2(200, 200), 30), Rectangle.Empty);
             _agent = new Agent(new Vector2(100, 100), 0, new SeekBehaviour(_coin), this);
             _agent2 = new Agent(new Vector2(300, 300), 0, new SeekBehaviour(_agent), this);
+            _agent3 = new Agent(new Vector2(w / 2, 20), 0, new PathFollowingBehaviour(pathPoints, 10f), this);
             _rock = new Rock(new Circle(new Vector2(w / 2, h / 2), 32));
             Components.Add(_agent);
             Components.Add(_agent2);
+            Components.Add(_agent3);
             
-
             base.Initialize();
         }
 
@@ -126,6 +139,7 @@ namespace MainQuest4_DragonDrop
             _spriteBatch.Draw(coins, _coin.Circle.Position, new Rectangle(30, 30, coins.Width / 4, coins.Height / 4), Color.White);
             _spriteBatch.Draw(dragons, _agent.Position, new Rectangle(0, 0, dragons.Width / 3, dragons.Height / 2), Color.White, _agent.Heading, new Vector2(dragons.Width / 6, dragons.Height / 4), 1.0f, SpriteEffects.None, 0f);
             _spriteBatch.Draw(dragons, _agent2.Position, new Rectangle(dragons.Width / 3, dragons.Height / 2, dragons.Width / 3, dragons.Height / 2), Color.White, _agent2.Heading, new Vector2(dragons.Width / 6, dragons.Height / 4), 1.0f, SpriteEffects.None, 0f);
+            _spriteBatch.Draw(dragons, _agent3.Position, new Rectangle(2 * dragons.Width / 3, 0, dragons.Width / 3, dragons.Height / 2), Color.White, _agent3.Heading, new Vector2(dragons.Width / 6, dragons.Height / 4), 1.0f, SpriteEffects.None, 0f);
             _spriteBatch.Draw(rock, _rock.circle.Position - new Vector2(rock.Width / 2, rock.Height / 2), Color.White);
             
             _spriteBatch.End();
