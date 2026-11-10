@@ -1,4 +1,5 @@
-﻿using MGGameLibrary.Shapes;
+﻿using MGGameLibrary;
+using MGGameLibrary.Shapes;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -17,10 +18,13 @@ namespace MainQuest4_DragonDrop
         public Agent _agent;
         public Agent _agent2;
         public Agent _agent3;
+        public Agent _agent4;
 
         public Texture2D dragons;
         public Texture2D coins;
         public Texture2D rock;
+
+        public AvoidCollidableWithWhiskersBehaviour avoidBehaviour;
 
         public Color _backgroundColour;
         public Coin _coin;
@@ -53,14 +57,30 @@ namespace MainQuest4_DragonDrop
             };
 
             _coin = new Coin(new Circle(new Vector2(200, 200), 30), Rectangle.Empty);
-            _agent = new Agent(new Vector2(100, 100), 0, new SeekBehaviour(_coin), this);
-            _agent2 = new Agent(new Vector2(300, 300), 0, new SeekBehaviour(_agent), this);
+            
             _agent3 = new Agent(new Vector2(w / 2, 20), 0, new PathFollowingBehaviour(pathPoints, 10f), this);
-            _rock = new Rock(new Circle(new Vector2(w / 2, h / 2), 32));
+
+            
+            _rock = new Rock(new Circle(new Vector2(w / 2, h / 2), 40));
+
+
+            List<Vector2> whiskers = new List<Vector2>()
+            {
+                new Vector2(0, -100),
+		        new Vector2(30, -100),
+                new Vector2(-30, -100),
+            };
+            _agent = new Agent(new Vector2(100, 100), 0, new AvoidCollidableWithWhiskersBehaviour(whiskers, new List<Rock>() { _rock }, _coin), this);
+            _agent2 = new Agent(new Vector2(300, 300), 0, new AvoidCollidableWithWhiskersBehaviour(whiskers, new List<Rock>() { _rock }, _agent), this);
+            avoidBehaviour = new AvoidCollidableWithWhiskersBehaviour(whiskers, new List<Rock>() { _rock }, _coin);
+            _agent4 = new Agent(new Vector2(100, 400), 0, avoidBehaviour, this);
+
+
             Components.Add(_agent);
             Components.Add(_agent2);
             Components.Add(_agent3);
-            
+            Components.Add(_agent4);
+
             base.Initialize();
         }
 
@@ -140,6 +160,7 @@ namespace MainQuest4_DragonDrop
             _spriteBatch.Draw(dragons, _agent.Position, new Rectangle(0, 0, dragons.Width / 3, dragons.Height / 2), Color.White, _agent.Heading, new Vector2(dragons.Width / 6, dragons.Height / 4), 1.0f, SpriteEffects.None, 0f);
             _spriteBatch.Draw(dragons, _agent2.Position, new Rectangle(dragons.Width / 3, dragons.Height / 2, dragons.Width / 3, dragons.Height / 2), Color.White, _agent2.Heading, new Vector2(dragons.Width / 6, dragons.Height / 4), 1.0f, SpriteEffects.None, 0f);
             _spriteBatch.Draw(dragons, _agent3.Position, new Rectangle(2 * dragons.Width / 3, 0, dragons.Width / 3, dragons.Height / 2), Color.White, _agent3.Heading, new Vector2(dragons.Width / 6, dragons.Height / 4), 1.0f, SpriteEffects.None, 0f);
+            _spriteBatch.Draw(dragons, _agent4.Position, new Rectangle(2 * dragons.Width / 3, dragons.Height / 2, dragons.Width / 3, dragons.Height / 2), Color.White, _agent4.Heading, new Vector2(dragons.Width / 6, dragons.Height / 4), 1.0f, SpriteEffects.None, 0f);
             _spriteBatch.Draw(rock, _rock.circle.Position - new Vector2(rock.Width / 2, rock.Height / 2), Color.White);
             
             _spriteBatch.End();
