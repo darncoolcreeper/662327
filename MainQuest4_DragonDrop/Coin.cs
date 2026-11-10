@@ -1,4 +1,5 @@
-﻿using MGGameLibrary.Shapes;
+﻿using MGGameLibrary;
+using MGGameLibrary.Shapes;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;

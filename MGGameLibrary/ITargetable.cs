@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MainQuest4_DragonDrop
+namespace MGGameLibrary
 {
     public interface ITargetable
     {
