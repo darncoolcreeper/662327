@@ -39,6 +39,19 @@
 /processorParam:Version=3.8.5.1
 /build:dragons.png
 
+#begin logo.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/processorParam:Version=3.8.5.1
+/build:logo.png
+
 #begin rock.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -51,4 +64,20 @@
 /processorParam:TextureFormat=Color
 /processorParam:Version=3.8.5.1
 /build:rock.png
+
+#begin Timer.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/processorParam:Version=3.8.5.1
+/build:Timer.spritefont
+
+#begin TitleText.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/processorParam:Version=3.8.5.1
+/build:TitleText.spritefont
 
