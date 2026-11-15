@@ -26,6 +26,13 @@ namespace MGGameLibrary
             _adjacency[from].Add((edge, to));
         }
 
+        public List<(TEdge, TNode)> GetEdges(TNode node)
+        {
+            if (_adjacency.ContainsKey(node))
+                return _adjacency[node];
+            else
+                return new List<(TEdge, TNode)>();
+        }
 
 
 
