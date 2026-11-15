@@ -30,6 +30,7 @@ namespace MGGameLibrary
                     CurrentState.OnExit();
                     CurrentState = edge.Item2;
                     CurrentState.OnEnter();
+
                 }
             }
 

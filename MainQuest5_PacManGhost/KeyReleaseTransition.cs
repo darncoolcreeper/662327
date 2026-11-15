@@ -22,7 +22,7 @@ namespace MainQuest5_PacManGhost
 
         public bool ToTransition()
         {
-            if (_oldKeyState && Keyboard.GetState().IsKeyDown(Key))
+            if (_oldKeyState && !Keyboard.GetState().IsKeyDown(Key))
             {
                 _oldKeyState = true;
                 return true;
