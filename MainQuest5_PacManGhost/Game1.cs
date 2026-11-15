@@ -8,7 +8,8 @@ namespace MainQuest5_PacManGhost
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-
+        public Texture2D _lightBulbTexture;
+        public LightBulb _lightBulb;
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -26,7 +27,9 @@ namespace MainQuest5_PacManGhost
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            _lightBulbTexture = Content.Load<Texture2D>("lightbulb");
+            _lightBulb = new LightBulb(this);
+            Components.Add(_lightBulb);
             // TODO: use this.Content to load your game content here
         }
 
@@ -44,7 +47,12 @@ namespace MainQuest5_PacManGhost
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
+
             // TODO: Add your drawing code here
+
+            _spriteBatch.Begin();
+            _spriteBatch.Draw(_lightBulbTexture, new Vector2(10, 10), _lightBulb.SourceRectangle, Color.White);
+            _spriteBatch.End();
 
             base.Draw(gameTime);
         }
