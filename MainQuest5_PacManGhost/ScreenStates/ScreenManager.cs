@@ -19,8 +19,8 @@ namespace MainQuest5_PacManGhost.ScreenStates
         public ScreenManager(Game game) : base(game)
         {
             Texture2D lightBulb = Game.Content.Load<Texture2D>("lightBulb");
-            Texture2D logo = Game.Content.Load<Texture2D>("AjaniLink");
-            SpriteFont font = Game.Content.Load<SpriteFont>("Title");
+            //Texture2D logo = Game.Content.Load<Texture2D>("AjaniLink");
+            SpriteFont font = Game.Content.Load<SpriteFont>("TitleText");
 
             FlashScreenState flashScreen = new(1, Game);
             TitleScreenState titleScreen = new(Game);
