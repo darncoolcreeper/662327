@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MainQuest5_PacManGhost
+namespace MainQuest5_PacManGhost.ScreenStates
 {
     public class GameScreenState : ScreenState
     {
@@ -34,6 +34,7 @@ namespace MainQuest5_PacManGhost
 
         public override void Draw(GameTime gameTime)
         {
+            GraphicsDevice.Clear(Color.Crimson);
         }
     }
 

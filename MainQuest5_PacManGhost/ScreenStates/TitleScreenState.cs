@@ -5,12 +5,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MainQuest5_PacManGhost
+namespace MainQuest5_PacManGhost.ScreenStates
 {
     public class TitleScreenState : ScreenState
     {
         public TitleScreenState(Game game) : base(game)
         {
+        }
+
+        public override void Draw(GameTime gameTime)
+        {
+            GraphicsDevice.Clear(Color.Teal);
         }
 
         public override void OnEnter()
@@ -22,10 +27,6 @@ namespace MainQuest5_PacManGhost
         }
 
         public override void OnUpdate(float seconds)
-        {
-        }
-
-        public override void Draw(GameTime gameTime)
         {
         }
     }

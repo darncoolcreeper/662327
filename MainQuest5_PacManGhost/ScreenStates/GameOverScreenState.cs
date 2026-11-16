@@ -5,22 +5,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MainQuest5_PacManGhost
+namespace MainQuest5_PacManGhost.ScreenStates
 {
     public class GameOverScreenState : ScreenState
     {
         private GameScreenState _theGame;
-        private Timer _timer;
+        public Timer Timer { get; private set; }
 
         public GameOverScreenState(float time, GameScreenState theGame, Game game) : base(game)
         {
             _theGame = theGame;
-            _timer = new Timer(time);
+            Timer = new Timer(time);
         }
 
         public override void OnEnter()
         {
-            _timer.Start();
+            Timer.Start();
         }
 
         public override void OnExit()
@@ -29,11 +29,12 @@ namespace MainQuest5_PacManGhost
 
         public override void OnUpdate(float seconds)
         {
-            _timer.Update(seconds);
+            Timer.Update(seconds);
         }
 
         public override void Draw(GameTime gameTime)
         {
+            GraphicsDevice.Clear(Color.DeepPink);
         }
     }
 }

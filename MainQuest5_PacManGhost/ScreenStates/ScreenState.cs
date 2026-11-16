@@ -6,20 +6,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MainQuest5_PacManGhost
+namespace MainQuest5_PacManGhost.ScreenStates
 {
-    public abstract class ScreenState : GameComponent, IState
+    
+    public abstract class ScreenState : DrawableGameComponent, IState
     {
         public ScreenState(Game game) : base(game)
         {
         }
 
         public abstract void OnEnter();
-
         public abstract void OnExit();
-
         public abstract void OnUpdate(float seconds);
-
-        public abstract void Draw(GameTime gameTime);
+        public abstract override void Draw(GameTime gameTime);
     }
 }

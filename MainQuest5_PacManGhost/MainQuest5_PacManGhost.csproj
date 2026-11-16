@@ -29,7 +29,4 @@
   <ItemGroup>
     <ProjectReference Include="..\MGGameLibrary\MGGameLibrary.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ScreenStates - Copy\" />
-  </ItemGroup>
 </Project>

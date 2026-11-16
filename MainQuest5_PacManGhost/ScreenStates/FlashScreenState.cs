@@ -5,14 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MainQuest5_PacManGhost
+namespace MainQuest5_PacManGhost.ScreenStates
 {
     public class FlashScreenState : ScreenState
     {
         public Timer Timer { get; private set; }
 
-        public FlashScreenState(float time, Game game)
-            : base(game)
+        public FlashScreenState(float time, Game game) : base(game)
         {
             Timer = new Timer(time);
         }
@@ -33,6 +32,7 @@ namespace MainQuest5_PacManGhost
 
         public override void Draw(GameTime gameTime)
         {
+            GraphicsDevice.Clear(Color.Ivory);
         }
     }
 }
