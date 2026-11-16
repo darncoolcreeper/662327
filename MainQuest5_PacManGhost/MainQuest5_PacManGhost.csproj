@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net9.0</TargetFramework>
@@ -28,5 +28,8 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MGGameLibrary\MGGameLibrary.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ScreenStates - Copy\" />
   </ItemGroup>
 </Project>
