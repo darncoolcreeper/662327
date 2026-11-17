@@ -8,9 +8,10 @@ namespace MainQuest5_PacManGhost
     public class Game1 : Game
     {
         private GraphicsDeviceManager _graphics;
-        private SpriteBatch _spriteBatch;
+        public SpriteBatch _spriteBatch;
         //public Texture2D _lightBulbTexture;
         //public LightBulb _lightBulb;
+        public SpriteFont TitleText => Content.Load<SpriteFont>("TitleText");
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
