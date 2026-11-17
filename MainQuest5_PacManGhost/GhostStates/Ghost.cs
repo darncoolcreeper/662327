@@ -57,6 +57,10 @@ namespace MainQuest5_PacManGhost.GhostStates
                 new KeyPressTransition(Keys.D3),
                 eaten);
 
+            graph.AddEdge(fleeing,
+                new KeyPressTransition(Keys.D1),
+                chasing);
+
             graph.AddEdge(eaten,
                 new KeyPressTransition(Keys.D4),
                 inCage);
