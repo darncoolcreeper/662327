@@ -29,6 +29,12 @@ namespace MainQuest5_PacManGhost.ScreenStates
             PauseScreenState pauseScreen = new(Game);
             GameOverScreenState gameOverScreen = new(2, gameScreen, Game);
 
+
+            
+
+
+
+
             KeyPressTransition pressC = new(Keys.C);
             KeyPressTransition pressP = new(Keys.P);
             KeyPressTransition pressSpace = new(Keys.Space);
